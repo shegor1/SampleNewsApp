@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Мировые Новости</string>
+    <string name="search_hint">Поиск</string>
+    <string name="network_error_message">Проблемы с подключением</string>
+    <string name="news_location_title">Локализация новостей</string>
+    <string name="full_news_link_title">Полная новость доступна по ссылке:\n%1$s</string>
+    <string name="empty_search_field">Пожалуйста, введите поисковой запрос</string>
+
+    <!--    date formatting-->
+    <string name="date_formatting_yesterday">Вчера %1$s</string>
+    <string name="date_formatting_today">Сегодня %1$s</string>
+    <string name="date_formatting_minutes_from_2_to_4">%1$d минуты назад</string>
+    <string name="date_formatting_minutes_from_5_to_9_0_11">%1$d минут назад</string>
+    <string name="date_formatting_minutes_1">%1$d минуту назад</string>
+    <string name="date_formatting_recently">Только что</string>
+
+    <!--    category filters-->
+    <string name="filter_general">ОБЩЕЕ</string>
+    <string name="filter_business">БИЗНЕС</string>
+    <string name="filter_entertainment">РАЗВЛЕЧЕНИЯ</string>
+    <string name="filter_health">ЗДОРОВЬЕ</string>
+    <string name="filter_science">НАУКА</string>
+    <string name="filter_sports">СПОРТ</string>
+    <string name="filter_technology">ТЕХНОЛОГИИ</string>
+
+    <!--    bottom nav menu titles-->
+    <string name="bottom_menu_title_rubrics">Рубрики</string>
+    <string name="bottom_menu_title_search">Поиск</string>
+    <string name="bottom_menu_title_bookmarks">Закладки</string>
+    <string name="bottom_menu_title_settings">Настройки</string>
+
+    <!--news location filters-->
+    <string name="united_arab_emirates">ОАЭ</string>
+    <string name="argentina">Аргентина</string>
+    <string name="austria">Австрия</string>
+    <string name="australia">Австралия</string>
+    <string name="belgium">Бельгия</string>
+    <string name="bulgaria">Болгария</string>
+    <string name="brazil">Бразилия</string>
+    <string name="canada">Канада</string>
+    <string name="switzerland">Швейцария</string>
+    <string name="china">Китай</string>
+    <string name="colombia">Колумбия</string>
+    <string name="cuba">Куба</string>
+    <string name="czech_republic">Чехия</string>
+    <string name="egypt">Египет</string>
+    <string name="germany">Германия</string>
+    <string name="france">Франция</string>
+    <string name="united_kingdom">Англия</string>
+    <string name="greece">Греция</string>
+    <string name="hong_kong">Гон Конг</string>
+    <string name="hungary">Венгрия</string>
+    <string name="indonesia">Индонезия</string>
+    <string name="ireland">Ирландия</string>
+    <string name="israel">Израиль</string>
+    <string name="india">Индия</string>
+    <string name="italy">Италия</string>
+    <string name="japan">Япония</string>
+    <string name="south_korea">Южная Корея</string>
+    <string name="lithuania">Литва</string>
+    <string name="latvia">Латвия</string>
+    <string name="morocco">Морокко</string>
+    <string name="mexico">Мексика</string>
+    <string name="malaysia">Малазия</string>
+    <string name="nigeria">Нигерия</string>
+    <string name="netherlands">Нидерланды</string>
+    <string name="norway">Норвегия</string>
+    <string name="new_zealand">Новая Зеландия</string>
+    <string name="philippines">Филипины</string>
+    <string name="poland">Польша</string>
+    <string name="portugal">Португалия</string>
+    <string name="romania">Румыния</string>
+    <string name="serbia">Сербия</string>
+    <string name="russia">Россия</string>
+    <string name="saudi_arabia">Саудовская Аравия</string>
+    <string name="sweden">Швеция</string>
+    <string name="singapore">Сингапур</string>
+    <string name="slovenia">Словения</string>
+    <string name="slovakia">Словакия</string>
+    <string name="thailand">Таиланд</string>
+    <string name="turkey">Турция</string>
+    <string name="taiwan">Тайвань</string>
+    <string name="ukraine">Украина</string>
+    <string name="usa">США</string>
+    <string name="venezuela">Венесуэла</string>
+    <string name="south_africa">ЮАР</string>
+</resources>

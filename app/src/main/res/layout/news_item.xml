@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="news"
+            type="com.shegor.samplenewsapp.models.NewsModel" />
+
+        <variable
+            name="clickListener"
+            type="com.shegor.samplenewsapp.adapters.NewsClickListener" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/newsViewHolderContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:clickListener="@{clickListener}"
+            app:newsItem="@{news}">
+
+            <ImageView
+                android:id="@+id/newsImageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:newsImage="@{news.imageUrl}"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            <Button
+                android:id="@+id/addRemoveToBookmarks"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="top|end"
+                android:layout_marginEnd="8dp"
+                android:background="@{news.saved?@drawable/ic_bookmark_saved:@drawable/ic_bookmark}"
+                app:clickListener="@{clickListener}"
+                app:layout_constraintDimensionRatio="h,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newsImageView"
+                app:layout_constraintTop_toTopOf="@id/newsTitle"
+                app:newsItem="@{news}"
+                tools:background="@drawable/ic_bookmark" />
+
+            <TextView
+                android:id="@+id/newsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toStartOf="@+id/addRemoveToBookmarks"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newsImageView"
+                app:newsTitleFormatted="@{news.title}"
+                tools:text="The title of the News" />
+
+            <TextView
+                android:id="@+id/newsPubDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/blue"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/newsTitle"
+                app:newsPubDateFormatted="@{news.pubDate}"
+                tools:text="Today" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

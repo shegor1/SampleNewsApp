@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="light_blue">#5ca0fe</color>
+    <color name="blue">#0372ca</color>
+    <color name="dark_blue">#004899</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bottom_nav_menu_grey">#997A7474</color>
+    <color name="ripple_effect_grey">#FFACA9A9</color>
+    <color name="img_placeholder_grey">#EEEEEE</color>
+    <color name="transparent">#00FFFFFF</color>
+</resources>

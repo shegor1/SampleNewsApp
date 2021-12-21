@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/newsFeedTabsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_news_feed"
+        android:title="@string/bottom_menu_title_rubrics" />
+    <item
+        android:id="@+id/newsSearchFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:title="@string/bottom_menu_title_search" />
+    <item
+        android:id="@+id/newsBookmarksFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bookmark"
+        android:title="@string/bottom_menu_title_bookmarks" />
+    <item
+        android:id="@+id/newsSettingsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/bottom_menu_title_settings" />
+</menu>

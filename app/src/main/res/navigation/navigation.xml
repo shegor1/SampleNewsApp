@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/newsFeedTabsFragment">
+
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.shegor.samplenewsapp.ui.NewsDetails"
+        android:label="NewsDetailsFragment"
+        tools:layout="@layout/fragment_news_details">
+        <argument
+            android:name="newsItem"
+            app:argType="com.shegor.samplenewsapp.models.NewsModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsSearchFragment"
+        android:name="com.shegor.samplenewsapp.ui.NewsSearchFragment"
+        android:label="NewsSearchFragment"
+        tools:layout="@layout/fragment_news_search">
+        <action
+            android:id="@+id/action_searchNewsFragment_to_newsDetails"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsSettingsFragment"
+        android:name="com.shegor.samplenewsapp.ui.NewsSettingsFragment"
+        android:label="NewsSettingsFragment"
+        tools:layout="@layout/fragment_news_settings" />
+    <fragment
+        android:id="@+id/newsFeedTabsFragment"
+        android:name="com.shegor.samplenewsapp.ui.NewsFeedTabsFragment"
+        android:label="NewsFeedTabsFragment">
+        <action
+            android:id="@+id/action_newsListTabsFragment_to_newsDetails"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsBookmarksFragment"
+        android:name="com.shegor.samplenewsapp.ui.NewsBookmarksFragment"
+        android:label="NewsBookmarksFragment">
+        <action
+            android:id="@+id/action_favoriteNewsFragment_to_newsDetails"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">World News</string>
+    <string name="search_hint">Search</string>
+    <string name="network_error_message">Network error</string>
+    <string name="news_location_title">News Location</string>
+    <string name="full_news_link_title">Read full text of the news at: %1$s</string>
+    <string name="empty_search_field">Please, enter your search term</string>
+
+<!--    date formatting-->
+    <string name="date_formatting_yesterday">Yesterday %1$s</string>
+    <string name="date_formatting_today">Today %1$s</string>
+    <string name="date_formatting_minutes_from_2_to_4">%1$d minutes ago</string>
+    <string name="date_formatting_minutes_from_5_to_9_0_11">%1$d minutes ago</string>
+    <string name="date_formatting_minutes_1">%1$d minutes ago</string>
+    <string name="date_formatting_recently">Recently</string>
+
+<!--    category filters-->
+    <string name="filter_general">GENERAL</string>
+    <string name="filter_business">BUSINESS</string>
+    <string name="filter_entertainment">ENTERTAINMENT</string>
+    <string name="filter_health">HEALTH</string>
+    <string name="filter_science">SCIENCE</string>
+    <string name="filter_sports">SPORTS</string>
+    <string name="filter_technology">TECHNOLOGY</string>
+
+<!--    bottom nav menu titles-->
+    <string name="bottom_menu_title_rubrics">Rubrics</string>
+    <string name="bottom_menu_title_search">Search</string>
+    <string name="bottom_menu_title_bookmarks">Bookmarks</string>
+    <string name="bottom_menu_title_settings">Settings</string>
+
+<!--news location filters-->
+    <string name="united_arab_emirates">United Arab Emirates</string>
+    <string name="argentina">Argentina</string>
+    <string name="austria">Austria</string>
+    <string name="australia">Australia</string>
+    <string name="belgium">Belgium</string>
+    <string name="bulgaria">Bulgaria</string>
+    <string name="brazil">Brazil</string>
+    <string name="canada">Canada</string>
+    <string name="switzerland">Switzerland</string>
+    <string name="china">China</string>
+    <string name="colombia">Colombia</string>
+    <string name="cuba">Cuba</string>
+    <string name="czech_republic">Czech Republic</string>
+    <string name="egypt">Egypt</string>
+    <string name="germany">Germany</string>
+    <string name="france">France</string>
+    <string name="united_kingdom">United Kingdom</string>
+    <string name="greece">Greece</string>
+    <string name="hong_kong">Hong Kong</string>
+    <string name="hungary">Hungary</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="ireland">Ireland</string>
+    <string name="israel">Israel</string>
+    <string name="india">India</string>
+    <string name="italy">Italy</string>
+    <string name="japan">Japan</string>
+    <string name="south_korea">South Korea</string>
+    <string name="lithuania">Lithuania</string>
+    <string name="latvia">Latvia</string>
+    <string name="morocco">Morocco</string>
+    <string name="mexico">Mexico</string>
+    <string name="malaysia">Malaysia</string>
+    <string name="nigeria">Nigeria</string>
+    <string name="netherlands">Netherlands</string>
+    <string name="norway">Norway</string>
+    <string name="new_zealand">New Zealand</string>
+    <string name="philippines">Philippines</string>
+    <string name="poland">Poland</string>
+    <string name="portugal">Portugal</string>
+    <string name="romania">Romania</string>
+    <string name="serbia">Serbia</string>
+    <string name="russia">Russia</string>
+    <string name="saudi_arabia">Saudi Arabia</string>
+    <string name="sweden">Sweden</string>
+    <string name="singapore">Singapore</string>
+    <string name="slovenia">Slovenia</string>
+    <string name="slovakia">Slovakia</string>
+    <string name="thailand">Thailand</string>
+    <string name="turkey">Turkey</string>
+    <string name="taiwan">Taiwan</string>
+    <string name="ukraine">Ukraine</string>
+    <string name="usa">USA</string>
+    <string name="venezuela">Venezuela</string>
+    <string name="south_africa">South Africa</string>
+
+</resources>
