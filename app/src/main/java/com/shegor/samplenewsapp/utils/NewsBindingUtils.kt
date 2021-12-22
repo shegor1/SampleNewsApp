@@ -2,6 +2,7 @@ package com.shegor.samplenewsapp.utils
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.View
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
@@ -16,102 +17,100 @@ import com.shegor.samplenewsapp.models.NewsModel
 enum class NewsLoadingStatus { LOADING, DONE, INIT_ERROR, REFRESHING_ERROR, NO_RESULTS, SEARCH_INIT }
 
 @BindingAdapter("newsTitleFormatted")
-fun TextView.setNewsTitleFormatted(newsTitle: String?) {
+fun setNewsTitleFormatted(textView: TextView, newsTitle: String?) {
     newsTitle?.let {
-        text = newsTitle
+        textView.text = newsTitle
     }
 }
 
 @BindingAdapter("newsPubDateFormatted")
-fun TextView.setNewsPubDateFormatted(newsPubDate: String?) {
-
-    text = DateUtils.jsonDateToFormattedDate(newsPubDate, context)
+fun setNewsPubDateFormatted(textView: TextView, newsPubDate: String?) {
+    textView.text = DateUtils.jsonDateToFormattedDate(newsPubDate, textView.context)
 }
 
 @BindingAdapter("newsLink")
-fun TextView.setNewsLink(newsLink: String?) {
+fun setNewsLink(textView: TextView, newsLink: String?) {
 
-    text = resources.getString(R.string.full_news_link_title, newsLink)
-    setLinkTextColor(resources.getColor(R.color.blue, context.theme))
-}
+    textView.apply {
+        text = resources.getString(R.string.full_news_link_title, newsLink)
 
-@BindingAdapter("newsImage")
-fun ImageView.setNewsImage(newsImgUrl: String?) {
-
-    if (newsImgUrl != null) {
-
-        val imgUri = newsImgUrl.toUri().buildUpon().scheme("https").build()
-        Glide.with(context)
-            .load(imgUri)
-            .error(R.drawable.no_image_placeholder)
-            .placeholder(ColorDrawable(Color.GRAY))
-            .into(this)
-    } else {
-        this.setImageResource(R.drawable.no_image_placeholder)
+        val linkTextColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            resources.getColor(R.color.blue, context.theme) else resources.getColor(R.color.blue)
+        setLinkTextColor(linkTextColor)
     }
 }
 
+@BindingAdapter("newsImage")
+fun setNewsImage(imageView: ImageView, newsImgUrl: String?) {
+
+    newsImgUrl?.let {
+
+        val imgUri = it.toUri().buildUpon().scheme("https").build()
+        Glide.with(imageView.context)
+            .load(imgUri)
+            .error(R.drawable.image_placeholder)
+            .placeholder(ColorDrawable(Color.GRAY))
+            .into(imageView)
+        return@setNewsImage
+    }
+    imageView.setImageResource(R.drawable.image_placeholder)
+
+}
+
 @BindingAdapter(value = ["clickListener", "newsItem"])
-fun View.onBookmarkIconClickListener(clickListener: NewsClickListener, newsItem: NewsModel) {
-    setOnClickListener { view ->
+fun onBookmarkIconClickListener(view: View, clickListener: NewsClickListener, newsItem: NewsModel) {
+    view.setOnClickListener { view ->
         if (view is Button) {
+            val buttonBackgroundResId =
+                if (newsItem.saved) R.drawable.ic_bookmark else R.drawable.ic_bookmark_saved
             view.background =
-                if (newsItem.saved) {
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_bookmark, null)
-                } else {
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_bookmark_saved, null)
-                }
+                ResourcesCompat.getDrawable(view.resources, buttonBackgroundResId, null)
         }
         clickListener.onClick(newsItem, view.id)
     }
 }
 
 @BindingAdapter("progressBarStatus")
-fun ProgressBar.manageProgressBar(status: NewsLoadingStatus?) {
+fun manageProgressBar(progressBar: ProgressBar, status: NewsLoadingStatus?) {
     status?.let { status ->
-        when (status) {
-            NewsLoadingStatus.LOADING -> this.visibility = View.VISIBLE
-            else -> this.visibility = View.GONE
-
-        }
+        progressBar.visibility =
+            if (status == NewsLoadingStatus.LOADING) View.VISIBLE else View.GONE
     }
 }
 
+
 @BindingAdapter("placeHolderImgStatus")
-fun ImageView.manageStatusImage(status: NewsLoadingStatus?) {
+fun manageStatusImage(imageView: ImageView, status: NewsLoadingStatus?) {
     status?.let { status ->
         when (status) {
             NewsLoadingStatus.SEARCH_INIT -> {
-                this.setImageResource(R.drawable.init_search)
-                this.visibility = View.VISIBLE
+                imageView.setImageResource(R.drawable.init_search)
+                imageView.visibility = View.VISIBLE
             }
 
             NewsLoadingStatus.LOADING -> {
-                this.visibility = View.GONE
+                imageView.visibility = View.GONE
             }
 
             NewsLoadingStatus.NO_RESULTS -> {
-                this.setImageResource(R.drawable.no_results_found)
-                this.visibility = View.VISIBLE
+                imageView.setImageResource(R.drawable.no_results_found)
+                imageView.visibility = View.VISIBLE
             }
 
             NewsLoadingStatus.INIT_ERROR -> {
-                this.setImageResource(R.drawable.ic_internet_error)
-                this.visibility = View.VISIBLE
+                imageView.setImageResource(R.drawable.ic_internet_error)
+                imageView.visibility = View.VISIBLE
             }
             NewsLoadingStatus.DONE -> {
-                this.visibility = View.GONE
+                imageView.visibility = View.GONE
             }
         }
     }
 }
 
 @BindingAdapter("refreshAnimStatus")
-fun SwipeRefreshLayout.manageRefresh(status: NewsLoadingStatus?) {
+fun manageRefresh(swipeRefreshLayout: SwipeRefreshLayout, status: NewsLoadingStatus?) {
     status?.let { status ->
-        when (status) {
-            NewsLoadingStatus.LOADING -> this.isRefreshing = true
-            else -> this.isRefreshing = false
-        }
+        swipeRefreshLayout.isRefreshing = status == NewsLoadingStatus.LOADING
     }
 }

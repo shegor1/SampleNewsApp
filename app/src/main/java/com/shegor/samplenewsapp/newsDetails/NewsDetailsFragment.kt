@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp.newsDetails
 
 import android.os.Bundle
 import android.view.*
@@ -11,25 +11,24 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.databinding.FragmentNewsDetailsBinding
-import com.shegor.samplenewsapp.viewModels.NewsDetailsViewModel
+import com.shegor.samplenewsapp.utils.ACCESS_VIEW_MODEL_ERROR_TEXT
 
-class NewsDetails : Fragment() {
+class NewsDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentNewsDetailsBinding
-    private lateinit var args: NewsDetailsArgs
+    private lateinit var args: NewsDetailsFragmentArgs
 
     private val detailsViewModel: NewsDetailsViewModel by lazy {
         val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
+            ACCESS_VIEW_MODEL_ERROR_TEXT
         }
-        args = NewsDetailsArgs.fromBundle(requireArguments())
+        args = NewsDetailsFragmentArgs.fromBundle(requireArguments())
         ViewModelProvider(
             this,
             NewsDetailsViewModel.NewsDetailsViewModelFactory(args.newsItem, activity.application)
         )
             .get(NewsDetailsViewModel::class.java)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

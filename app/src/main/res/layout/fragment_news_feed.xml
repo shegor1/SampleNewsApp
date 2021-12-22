@@ -7,13 +7,13 @@
 
         <variable
             name="newsViewModel"
-            type="com.shegor.samplenewsapp.viewModels.NewFeedViewModel" />
+            type="com.shegor.samplenewsapp.newsFeed.NewFeedViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.NewsFeedFragment">
+        tools:context=".newsFeed.NewsFeedFragment">
 
         <ImageView
             android:id="@+id/noNewsImg"

@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavMenu() {
-
-        val navController = findNavController(R.id.navHostFragment)
-        binding.bottomNavMenu.setupWithNavController(navController)
+        binding.bottomNavMenu.setupWithNavController(findNavController(R.id.navHostFragment))
     }
 }

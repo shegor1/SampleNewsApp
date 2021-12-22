@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp.newsBookmarks
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,7 +15,7 @@ import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.databinding.FragmentNewsBookmarksBinding
-import com.shegor.samplenewsapp.viewModels.NewsBookmarkViewModel
+import com.shegor.samplenewsapp.utils.ACCESS_VIEW_MODEL_ERROR_TEXT
 
 class NewsBookmarksFragment : Fragment() {
 
@@ -24,9 +24,9 @@ class NewsBookmarksFragment : Fragment() {
     private lateinit var newsRecyclerViewAdapter: NewsListAdapter
 
 
-    private val favoriteNewsViewModel: NewsBookmarkViewModel by lazy {
+    private val newsBookmarksViewModel: NewsBookmarkViewModel by lazy {
         val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
+            ACCESS_VIEW_MODEL_ERROR_TEXT
         }
         ViewModelProvider(this, NewsBookmarkViewModel.Factory(activity.application))
             .get(NewsBookmarkViewModel::class.java)
@@ -55,16 +55,16 @@ class NewsBookmarksFragment : Fragment() {
 
     private fun connectDataBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.favoriteNewsViewModel = favoriteNewsViewModel
+        binding.favoriteNewsViewModel = newsBookmarksViewModel
     }
 
     private fun setupRecyclerView() {
         newsRecyclerViewAdapter = NewsListAdapter(NewsClickListener { newsItem, clickedViewId ->
             when (clickedViewId) {
-                R.id.newsViewHolderContainer -> favoriteNewsViewModel.navigateToDetailsFragment(
+                R.id.newsViewHolderContainer -> newsBookmarksViewModel.navigateToDetailsFragment(
                     newsItem
                 )
-                R.id.addRemoveToBookmarks -> favoriteNewsViewModel.deleteBookmark(newsItem)
+                R.id.addRemoveToBookmarks -> newsBookmarksViewModel.deleteBookmark(newsItem)
             }
         })
 
@@ -78,10 +78,9 @@ class NewsBookmarksFragment : Fragment() {
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavMenu)
             ?.setOnItemReselectedListener { item ->
                 lifecycleScope.launchWhenResumed {
-                    val navController = findNavController()
                     val reselectedDestinationId = item.itemId
 
-                    if (navController.currentDestination?.id ?: 0 == reselectedDestinationId) {
+                    if (findNavController().currentDestination?.id ?: 0 == reselectedDestinationId) {
                         binding.newsRecyclerView.layoutManager?.scrollToPosition(0)
                     } else {
                         findNavController().popBackStack(reselectedDestinationId, inclusive = false)
@@ -91,22 +90,20 @@ class NewsBookmarksFragment : Fragment() {
     }
 
     private fun setObservers() {
-        favoriteNewsViewModel.news.observe(viewLifecycleOwner, { newsList ->
-            if (newsList != null) {
+        newsBookmarksViewModel.news.observe(viewLifecycleOwner) { newsList ->
+            newsList?.let {
                 newsRecyclerViewAdapter.submitList(newsList)
-                if (newsList.isEmpty())
-                    binding.noNewsImg.visibility = View.VISIBLE
-                else binding.noNewsImg.visibility = View.GONE
+                binding.noNewsImg.visibility = if (newsList.isEmpty()) View.VISIBLE else View.GONE
             }
-        })
 
-        favoriteNewsViewModel.navigationToDetailsFragment.observe(viewLifecycleOwner, { newsItem ->
+        }
+
+        newsBookmarksViewModel.navigationToDetailsFragment.observe(viewLifecycleOwner, { newsItem ->
             newsItem?.let { title ->
-                this.findNavController().navigate(
-                    NewsBookmarksFragmentDirections
-                        .actionFavoriteNewsFragmentToNewsDetails(title)
+                findNavController().navigate(
+                    NewsBookmarksFragmentDirections.actionNewsBookmarksFragmentToNewsDetailsFragment(title)
                 )
-                favoriteNewsViewModel.navigationToDetailsFragmentDone()
+                newsBookmarksViewModel.finishNavigationToDetailsFragment()
             }
         })
     }

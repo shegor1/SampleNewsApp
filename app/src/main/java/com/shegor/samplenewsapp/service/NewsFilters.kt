@@ -62,7 +62,7 @@ val FILTER_COUNTRIES = mapOf(
 )
 
 @Parcelize
-enum class NewsApiFilterCategory(val categoryFilter: String, val categoryNameResId: Int) :
+enum class NewsFilterCategory(val categoryFilter: String, val categoryNameResId: Int) :
     Parcelable {
     GENERAL("general", R.string.filter_general),
     BUSINESS("business", R.string.filter_business),

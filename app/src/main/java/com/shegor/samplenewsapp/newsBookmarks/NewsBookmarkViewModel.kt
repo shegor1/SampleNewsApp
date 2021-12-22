@@ -1,9 +1,8 @@
-package com.shegor.samplenewsapp.viewModels
+package com.shegor.samplenewsapp.newsBookmarks
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
-import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.NewsApi
@@ -12,8 +11,7 @@ import com.shegor.samplenewsapp.service.NewsApi
 class NewsBookmarkViewModel(application: Application) : AndroidViewModel(application) {
 
     var newsRepo = NewsRepo(
-        NewsApi.newsRetrofitService,
-        NewsDatabase.getInstance(application.applicationContext)
+        NewsApi.newsRetrofitService
     )
 
     private val _status = MutableLiveData<NewsLoadingStatus>()
@@ -40,7 +38,7 @@ class NewsBookmarkViewModel(application: Application) : AndroidViewModel(applica
         _navigationToDetailsFragment.value = newsItem
     }
 
-    fun navigationToDetailsFragmentDone() {
+    fun finishNavigationToDetailsFragment() {
         _navigationToDetailsFragment.value = null
     }
 

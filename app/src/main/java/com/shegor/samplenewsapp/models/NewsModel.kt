@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
-data class Response(
+data class NewsResponse(
     var totalResults: Long,
     var articles: List<NewsModel>
 )

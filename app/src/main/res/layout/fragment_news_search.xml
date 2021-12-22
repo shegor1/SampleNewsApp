@@ -7,17 +7,17 @@
 
         <variable
             name="searchViewModel"
-            type="com.shegor.samplenewsapp.viewModels.NewsSearchViewModel" />
+            type="com.shegor.samplenewsapp.newsSearch.NewsSearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.NewsFeedFragment">
+        tools:context=".newsFeed.NewsFeedFragment">
 
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/searchField"
+            android:id="@+id/search_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -27,6 +27,7 @@
             android:hint="@string/search_hint"
             android:imeOptions="actionSearch"
             android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:paddingTop="4dp"
             android:singleLine="true"
             android:textSize="28sp"
@@ -44,7 +45,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchField"
+            app:layout_constraintTop_toBottomOf="@id/search_bar"
             app:progressBarStatus="@{searchViewModel.status}" />
 
         <ImageView
@@ -60,7 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchField"
+            app:layout_constraintTop_toBottomOf="@id/search_bar"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_internet_error"
             app:placeHolderImgStatus="@{searchViewModel.status}" />
@@ -74,7 +75,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchField">
+            app:layout_constraintTop_toBottomOf="@+id/search_bar">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -85,9 +86,9 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="@+id/searchField"
-            app:layout_constraintEnd_toEndOf="@+id/searchField"
-            app:layout_constraintTop_toTopOf="@+id/searchField"
+            app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+            app:layout_constraintEnd_toEndOf="@+id/search_bar"
+            app:layout_constraintTop_toTopOf="@+id/search_bar"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 

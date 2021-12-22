@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp.newsFeed
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,10 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
-import com.shegor.samplenewsapp.viewModels.NewFeedViewModel
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.databinding.FragmentNewsFeedBinding
-import com.shegor.samplenewsapp.service.NewsApiFilterCategory
+import com.shegor.samplenewsapp.service.NewsFilterCategory
+import com.shegor.samplenewsapp.utils.ACCESS_VIEW_MODEL_ERROR_TEXT
 
 class NewsFeedFragment : Fragment() {
 
@@ -29,13 +29,13 @@ class NewsFeedFragment : Fragment() {
     private lateinit var binding: FragmentNewsFeedBinding
 
     private lateinit var newsRecyclerViewAdapter: NewsListAdapter
-    private lateinit var category: NewsApiFilterCategory
+    private lateinit var category: NewsFilterCategory
 
     private val newsViewModel: NewFeedViewModel by lazy {
         val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
+            ACCESS_VIEW_MODEL_ERROR_TEXT
         }
-        category = arguments?.getParcelable(ARG_OBJECT) ?: NewsApiFilterCategory.GENERAL
+        category = arguments?.getParcelable(ARG_OBJECT) ?: NewsFilterCategory.GENERAL
         ViewModelProvider(this, NewFeedViewModel.Factory(activity.application, category))
             .get(NewFeedViewModel::class.java)
     }
@@ -85,9 +85,8 @@ class NewsFeedFragment : Fragment() {
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavMenu)
             ?.setOnItemReselectedListener { item ->
                 lifecycleScope.launchWhenResumed {
-                    val navController = findNavController()
                     val reselectedDestinationId = item.itemId
-                    if (navController.currentDestination?.id ?: -1 == reselectedDestinationId) {
+                    if (findNavController().currentDestination?.id ?: -1 == reselectedDestinationId) {
                         binding.newsRecyclerView.layoutManager?.scrollToPosition(0)
                     } else {
                         findNavController().popBackStack(reselectedDestinationId, inclusive = false)
@@ -104,12 +103,13 @@ class NewsFeedFragment : Fragment() {
         })
 
         newsViewModel.navigationToDetailsFragment.observe(viewLifecycleOwner, { newsItem ->
-            newsItem?.let { newsItem ->
-                this.findNavController().navigate(
-                    NewsFeedTabsFragmentDirections
-                        .actionNewsListTabsFragmentToNewsDetails(newsItem)
+            newsItem?.let { title ->
+                findNavController().navigate(
+                    NewsFeedTabsFragmentDirections.actionNewsFeedTabsFragmentToNewsDetailsFragment(
+                        title
+                    )
                 )
-                newsViewModel.navigationToDetailsFragmentDone()
+                newsViewModel.finishNavigationToDetailsFragment()
             }
         })
 
@@ -138,12 +138,10 @@ class NewsFeedFragment : Fragment() {
         newsViewModel.savedNewsLiveData.observe(viewLifecycleOwner) {
             if (newsViewModel.savedNews == null) {
                 newsViewModel.savedNews = it
-            } else {
-                if (it != newsViewModel.savedNews) {
+            } else if (it != newsViewModel.savedNews) {
                     newsViewModel.checkForDbChanges(it)
                     newsViewModel.savedNews = it
                     newsRecyclerViewAdapter.notifyDataSetChanged()
-                }
             }
         }
     }

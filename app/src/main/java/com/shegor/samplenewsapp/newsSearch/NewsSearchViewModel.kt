@@ -1,9 +1,8 @@
-package com.shegor.samplenewsapp.viewModels
+package com.shegor.samplenewsapp.newsSearch
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
-import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.NewsApi
@@ -12,8 +11,7 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
 
 
     var newsRepo = NewsRepo(
-        NewsApi.newsRetrofitService,
-        NewsDatabase.getInstance(application.applicationContext)
+        NewsApi.newsRetrofitService
     )
 
     private val _status = MutableLiveData<NewsLoadingStatus>()
@@ -24,9 +22,9 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
     val news: LiveData<List<NewsModel>>
         get() = _news
 
-    private val _clearEditTextAction = MutableLiveData<Boolean>()
-    val clearEditTextAction: LiveData<Boolean>
-        get() = _clearEditTextAction
+    private val _clearSearchBarAction = MutableLiveData<Boolean>()
+    val clearSearchBarAction: LiveData<Boolean>
+        get() = _clearSearchBarAction
 
     private val _navigationToDetailsFragment = MutableLiveData<NewsModel?>()
     val navigationToDetailsFragment: LiveData<NewsModel?>
@@ -54,16 +52,16 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
         _navigationToDetailsFragment.value = newsItem
     }
 
-    fun navigationToDetailsFragmentDone() {
+    fun finishNavigationToDetailsFragment() {
         _navigationToDetailsFragment.value = null
     }
 
-    fun clearEditText() {
-        _clearEditTextAction.value = true
+    fun clearSearchBar() {
+        _clearSearchBarAction.value = true
     }
 
-    fun editTextCleared() {
-        _clearEditTextAction.value = false
+    fun finishClearingSearchBar() {
+        _clearSearchBarAction.value = false
     }
 
     fun saveOrDeleteBookmark(newsItem: NewsModel) {

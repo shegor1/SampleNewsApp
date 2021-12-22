@@ -14,26 +14,23 @@ abstract class NewsDatabase : RoomDatabase() {
     companion object {
 
         @Volatile
-        private var INSTANSE: NewsDatabase? = null
+        private var INSTANCE: NewsDatabase? = null
 
         fun getInstance(context: Context): NewsDatabase {
 
-            synchronized(this) {
+            return INSTANCE ?: synchronized(this) {
 
-                var instance = INSTANSE
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    NewsDatabase::class.java,
+                    "news_database"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
 
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        NewsDatabase::class.java,
-                        "news_database"
-                    )
-                        .fallbackToDestructiveMigration()
-                        .build()
+                INSTANCE = instance
 
-                    INSTANSE = instance
-                }
-                return instance
+                instance
             }
         }
     }

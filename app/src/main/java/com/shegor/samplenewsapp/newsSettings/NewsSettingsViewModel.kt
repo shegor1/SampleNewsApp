@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.viewModels
+package com.shegor.samplenewsapp.newsSettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

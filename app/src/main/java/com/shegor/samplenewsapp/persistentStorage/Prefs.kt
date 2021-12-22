@@ -1,8 +1,7 @@
 package com.shegor.samplenewsapp.persistentStorage
 
-import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.shegor.samplenewsapp.R
@@ -12,24 +11,17 @@ import java.io.IOException
 
 data class UserPreferences(val filterCountryStringId: Int)
 
-private const val USER_PREFERENCES_NAME = "user_preferences"
-
-private val Context.dataStore by preferencesDataStore(
-    name = USER_PREFERENCES_NAME
-)
-
-class Prefs(val context: Context) {
+class Prefs(private val dataStore: DataStore<Preferences>) {
 
     private object PreferencesKeys {
         val FILTER_COUNTRY = intPreferencesKey("filter_country")
     }
 
-    val userPreferencesFlow: LiveData<UserPreferences> = context.dataStore.data
+    val userPreferencesFlow: LiveData<UserPreferences> = dataStore.data
         .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
+            when (exception) {
+                is IOException -> emit(emptyPreferences())
+                else -> throw exception
             }
         }.map { preferences ->
 
@@ -39,8 +31,8 @@ class Prefs(val context: Context) {
         .asLiveData()
 
     suspend fun updateFilterCountry(filterCountry: Int) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.FILTER_COUNTRY] = filterCountry
+        dataStore.edit {
+            it[PreferencesKeys.FILTER_COUNTRY] = filterCountry
         }
     }
 }

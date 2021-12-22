@@ -7,14 +7,14 @@
 
         <variable
             name="favoriteNewsViewModel"
-            type="com.shegor.samplenewsapp.viewModels.NewsBookmarkViewModel" />
+            type="com.shegor.samplenewsapp.newsBookmarks.NewsBookmarkViewModel" />
 
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.NewsBookmarksFragment">
+        tools:context=".newsBookmarks.NewsBookmarksFragment">
 
         <ProgressBar
             android:id="@+id/progressBar"

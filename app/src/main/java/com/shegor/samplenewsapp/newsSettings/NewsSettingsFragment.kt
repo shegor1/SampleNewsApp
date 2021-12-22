@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp.newsSettings
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,8 +12,6 @@ import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.databinding.FragmentNewsSettingsBinding
 import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
-import com.shegor.samplenewsapp.viewModels.NewsSettingsViewModel
-
 
 class NewsSettingsFragment : Fragment() {
 
@@ -24,7 +22,7 @@ class NewsSettingsFragment : Fragment() {
     private lateinit var binding: FragmentNewsSettingsBinding
 
     private val settingsViewModel: NewsSettingsViewModel by lazy {
-        ViewModelProvider(this).get(NewsSettingsViewModel::class.java)
+        ViewModelProvider(this)[NewsSettingsViewModel::class.java]
     }
 
     private lateinit var popupMenu: PopupMenu
@@ -59,17 +57,16 @@ class NewsSettingsFragment : Fragment() {
 
             val countries =
                 FILTER_COUNTRIES.map { Pair(it.key, requireContext().getString(it.key)) }
-            var count = 1
 
-            for (country in countries.sortedBy { it.second }) {
+            countries.sortedBy { it.second }.forEachIndexed{index, country ->
                 popupMenu.menu.add(
                     FILTER_COUNTRY_MENU_GROUP_ID,
                     country.first,
-                    count,
+                    index,
                     country.second
                 )
-                count += 1
             }
+
             setupCountriesMenuListeners()
             popupMenu.show()
         }

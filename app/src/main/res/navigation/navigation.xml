@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/newsDetailsFragment"
-        android:name="com.shegor.samplenewsapp.ui.NewsDetails"
+        android:name="com.shegor.samplenewsapp.newsDetails.NewsDetailsFragment"
         android:label="NewsDetailsFragment"
         tools:layout="@layout/fragment_news_details">
         <argument
@@ -16,32 +16,32 @@
     </fragment>
     <fragment
         android:id="@+id/newsSearchFragment"
-        android:name="com.shegor.samplenewsapp.ui.NewsSearchFragment"
+        android:name="com.shegor.samplenewsapp.newsSearch.NewsSearchFragment"
         android:label="NewsSearchFragment"
         tools:layout="@layout/fragment_news_search">
         <action
-            android:id="@+id/action_searchNewsFragment_to_newsDetails"
+            android:id="@+id/action_newsSearchFragment_to_newsDetailsFragment"
             app:destination="@id/newsDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsSettingsFragment"
-        android:name="com.shegor.samplenewsapp.ui.NewsSettingsFragment"
+        android:name="com.shegor.samplenewsapp.newsSettings.NewsSettingsFragment"
         android:label="NewsSettingsFragment"
         tools:layout="@layout/fragment_news_settings" />
     <fragment
         android:id="@+id/newsFeedTabsFragment"
-        android:name="com.shegor.samplenewsapp.ui.NewsFeedTabsFragment"
+        android:name="com.shegor.samplenewsapp.newsFeed.NewsFeedTabsFragment"
         android:label="NewsFeedTabsFragment">
         <action
-            android:id="@+id/action_newsListTabsFragment_to_newsDetails"
+            android:id="@+id/action_newsFeedTabsFragment_to_newsDetailsFragment"
             app:destination="@id/newsDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsBookmarksFragment"
-        android:name="com.shegor.samplenewsapp.ui.NewsBookmarksFragment"
+        android:name="com.shegor.samplenewsapp.newsBookmarks.NewsBookmarksFragment"
         android:label="NewsBookmarksFragment">
         <action
-            android:id="@+id/action_favoriteNewsFragment_to_newsDetails"
+            android:id="@+id/action_newsBookmarksFragment_to_newsDetailsFragment"
             app:destination="@id/newsDetailsFragment" />
     </fragment>
 

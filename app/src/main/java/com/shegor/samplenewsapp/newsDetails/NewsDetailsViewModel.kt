@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.viewModels
+package com.shegor.samplenewsapp.newsDetails
 
 
 import android.app.Application
@@ -8,15 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.models.NewsModel
-import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.NewsApi
 
 class NewsDetailsViewModel(val currentNews: NewsModel, application: Application) : ViewModel() {
 
     var repo = NewsRepo(
-        NewsApi.newsRetrofitService,
-        NewsDatabase.getInstance(application.applicationContext)
+        NewsApi.newsRetrofitService
     )
 
     private val _bookmarkButtonState = MutableLiveData<Int>()

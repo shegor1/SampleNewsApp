@@ -11,10 +11,10 @@ interface NewsDatabaseDao {
     fun insertNewsItem(news: NewsModel)
 
     @Query("SELECT * from news_table order by insertDate desc")
-    fun getAllNews(): LiveData<List<NewsModel>>
+    fun getAllNewsLiveData(): LiveData<List<NewsModel>>
 
     @Query("SELECT * from news_table")
-    fun getAllNewsStatic(): List<NewsModel>
+    fun getAllNews(): List<NewsModel>
 
     @Query("SELECT * from news_table WHERE title = :newsTitle")
     fun getNewsByTitle(newsTitle: String): NewsModel

@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp.newsFeed
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.adapters.CategoryAdapter
 import com.shegor.samplenewsapp.databinding.FragmentNewsFeedTabsBinding
-import com.shegor.samplenewsapp.service.NewsApiFilterCategory
+import com.shegor.samplenewsapp.service.NewsFilterCategory
 
 
 class NewsFeedTabsFragment : Fragment() {
@@ -45,8 +45,10 @@ class NewsFeedTabsFragment : Fragment() {
 
     private fun setupTabs() {
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
-            tab.text =
-                requireContext().getString(NewsApiFilterCategory.values()[position].categoryNameResId)
+
+            tab.text = if (NewsFilterCategory.values().size > position)
+            requireContext().getString(NewsFilterCategory.values()[position].categoryNameResId)
+            else ""
         }.attach()
     }
 }

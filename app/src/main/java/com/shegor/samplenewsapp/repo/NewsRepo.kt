@@ -2,22 +2,25 @@ package com.shegor.samplenewsapp.repo
 
 import androidx.lifecycle.LiveData
 import com.shegor.samplenewsapp.service.NewsApiService
-import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.models.NewsModel
-import com.shegor.samplenewsapp.models.Response
-import com.shegor.samplenewsapp.service.NewsApiFilterCategory
+import com.shegor.samplenewsapp.models.NewsResponse
+import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
+import com.shegor.samplenewsapp.service.NewsFilterCategory
 import com.shegor.samplenewsapp.utils.DateUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.shegor.samplenewsapp.newsDb
 
 
-class NewsRepo(private val newsApiService: NewsApiService, private val newsDatabase: NewsDatabase) {
+class NewsRepo(private val newsApiService: NewsApiService) {
+
+    private val newsDatabase: NewsDatabase = newsDb
 
     fun getAllNewsData(
         country: String,
-        category: NewsApiFilterCategory,
+        category: NewsFilterCategory,
         viewModelScope: CoroutineScope,
         callback: (List<NewsModel>?) -> Unit,
     ) {
@@ -48,10 +51,10 @@ class NewsRepo(private val newsApiService: NewsApiService, private val newsDatab
     }
 
     private suspend fun processingResponse(
-        response: Response?,
+        newsResponse: NewsResponse?,
         callback: (List<NewsModel>?) -> Unit
     ) {
-        var newsList = response?.articles ?: return callback(listOf())
+        var newsList = newsResponse?.articles ?: return callback(listOf())
 
         withContext(Dispatchers.IO) {
 
@@ -65,7 +68,7 @@ class NewsRepo(private val newsApiService: NewsApiService, private val newsDatab
     }
 
     private fun checkIfSaved(networkNewsList: List<NewsModel>): List<NewsModel> {
-        val savedNewsList = newsDatabase.newsDao.getAllNewsStatic()
+        val savedNewsList = newsDatabase.newsDao.getAllNews()
 
         networkNewsList.forEach { networkNewsItem ->
             networkNewsItem.saved = savedNewsList.contains(networkNewsItem)
@@ -78,7 +81,7 @@ class NewsRepo(private val newsApiService: NewsApiService, private val newsDatab
     }
 
     fun getNewsFromDb(): LiveData<List<NewsModel>> {
-        return newsDatabase.newsDao.getAllNews()
+        return newsDatabase.newsDao.getAllNewsLiveData()
     }
 
     fun saveNewsItem(news: NewsModel) {

@@ -7,22 +7,23 @@ import java.time.format.DateTimeFormatter
 
 object DateUtils {
 
-    fun jsonDateToLocalDate(jsonDate: String?): LocalDateTime {
+    private val jsonDateFormatter: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private val fullDateFormatter: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    private val daysMonthsDateFormatter: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("dd MMMM HH:mm")
+    private val timeDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-        val jsonDateFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        return LocalDateTime.parse(jsonDate, jsonDateFormatter)
-    }
+
+    fun jsonDateToLocalDate(jsonDate: String?): LocalDateTime =
+        LocalDateTime.parse(jsonDate, jsonDateFormatter)
+
 
     fun jsonDateToFormattedDate(dateString: String?, context: Context): String {
 
         val currentDate = LocalDateTime.now()
         val date = jsonDateToLocalDate(dateString)
-
-        val fullDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-        val daysMonthsDateFormatter = DateTimeFormatter.ofPattern("dd MMMM HH:mm")
-        val timeDateFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
 
         return when {
             (currentDate.year - date.year) >= 1 -> date.format(fullDateFormatter)

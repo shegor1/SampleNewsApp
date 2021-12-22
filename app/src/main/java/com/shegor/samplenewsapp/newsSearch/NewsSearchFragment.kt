@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.ui
+package com.shegor.samplenewsapp.newsSearch
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -17,8 +17,8 @@ import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.databinding.FragmentNewsSearchBinding
+import com.shegor.samplenewsapp.utils.ACCESS_VIEW_MODEL_ERROR_TEXT
 import com.shegor.samplenewsapp.utils.hideKeyboard
-import com.shegor.samplenewsapp.viewModels.NewsSearchViewModel
 
 class NewsSearchFragment : Fragment() {
 
@@ -28,12 +28,11 @@ class NewsSearchFragment : Fragment() {
 
     private val searchViewModel: NewsSearchViewModel by lazy {
         val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
+            ACCESS_VIEW_MODEL_ERROR_TEXT
         }
         ViewModelProvider(this, NewsSearchViewModel.Factory(activity.application))
             .get(NewsSearchViewModel::class.java)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +40,7 @@ class NewsSearchFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_search, container, false)
+
 
         connectDataBinding()
         setupRecyclerView()
@@ -81,10 +81,9 @@ class NewsSearchFragment : Fragment() {
             ?.setOnItemReselectedListener { item ->
                 lifecycleScope.launchWhenResumed {
 
-                    val navController = findNavController()
                     val reselectedDestinationId = item.itemId
 
-                    if (navController.currentDestination?.id ?: 0 == reselectedDestinationId) {
+                    if (findNavController().currentDestination?.id ?: 0 == reselectedDestinationId) {
                         binding.searchRecyclerView.layoutManager?.scrollToPosition(0)
                     } else {
                         findNavController().popBackStack(reselectedDestinationId, inclusive = false)
@@ -100,26 +99,27 @@ class NewsSearchFragment : Fragment() {
             }
         })
 
-        searchViewModel.clearEditTextAction.observe(viewLifecycleOwner, { isClicked ->
+        searchViewModel.clearSearchBarAction.observe(viewLifecycleOwner, { isClicked ->
             if (isClicked) {
-                binding.searchField.text?.clear()
-                searchViewModel.editTextCleared()
+                binding.searchBar.text?.clear()
+                searchViewModel.finishClearingSearchBar()
             }
         })
 
         searchViewModel.navigationToDetailsFragment.observe(viewLifecycleOwner, { newsItem ->
             newsItem?.let { title ->
-                this.findNavController().navigate(
-                    NewsSearchFragmentDirections
-                        .actionSearchNewsFragmentToNewsDetails(newsItem)
+                findNavController().navigate(
+                    NewsSearchFragmentDirections.actionNewsSearchFragmentToNewsDetailsFragment(
+                        title
+                    )
                 )
-                searchViewModel.navigationToDetailsFragmentDone()
+                searchViewModel.finishNavigationToDetailsFragment()
             }
         })
     }
 
     private fun setupListeners() {
-        binding.searchField.setOnEditorActionListener { v, actionId, _ ->
+        binding.searchBar.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text.isNotBlank()) {
                     searchViewModel.searchNewsData(v.text.toString())
@@ -138,7 +138,7 @@ class NewsSearchFragment : Fragment() {
         }
 
         binding.deleteQueryButton.setOnClickListener {
-            searchViewModel.clearEditText()
+            searchViewModel.clearSearchBar()
         }
     }
 }

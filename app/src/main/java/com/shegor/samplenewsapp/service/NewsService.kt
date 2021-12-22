@@ -1,6 +1,6 @@
 package com.shegor.samplenewsapp.service
 
-import com.shegor.samplenewsapp.models.Response
+import com.shegor.samplenewsapp.models.NewsResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -22,13 +22,13 @@ interface NewsApiService {
         @Query("country") country: String,
         @Query("category") category: String,
         @Query("apiKey") apiKey: String = API_KEY
-    ): Response?
+    ): NewsResponse?
 
     @GET("everything")
     suspend fun getNewsDataByQuery(
         @Query("q") query: String,
         @Query("apiKey") apiKey: String = API_KEY
-    ): Response?
+    ): NewsResponse?
 }
 
 object NewsApi {
