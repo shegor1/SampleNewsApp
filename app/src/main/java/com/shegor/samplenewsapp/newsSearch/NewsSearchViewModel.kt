@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 import com.shegor.samplenewsapp.models.NewsModel
+import com.shegor.samplenewsapp.newsDb
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.NewsApi
 
@@ -11,7 +12,7 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
 
 
     var newsRepo = NewsRepo(
-        NewsApi.newsRetrofitService
+        NewsApi.newsRetrofitService, newsDb
     )
 
     private val _status = MutableLiveData<NewsLoadingStatus>()
@@ -29,6 +30,11 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
     private val _navigationToDetailsFragment = MutableLiveData<NewsModel?>()
     val navigationToDetailsFragment: LiveData<NewsModel?>
         get() = _navigationToDetailsFragment
+
+    val savedNewsLiveData = newsRepo.getNewsFromDb()
+
+    var savedNews: List<NewsModel>? = null
+
 
     init {
         _status.value = NewsLoadingStatus.SEARCH_INIT
@@ -75,6 +81,14 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
                 newsRepo.saveNewsItem(currentNews)
             }
         }
+    }
+
+    fun checkForDbChanges(dbNewsList: List<NewsModel>): List<NewsModel>? {
+        val networkNewsList = news.value
+        networkNewsList?.forEach { networkNewsItem ->
+            networkNewsItem.saved = dbNewsList.contains(networkNewsItem)
+        }
+        return networkNewsList
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

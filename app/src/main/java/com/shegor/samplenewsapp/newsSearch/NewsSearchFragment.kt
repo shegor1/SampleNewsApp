@@ -37,7 +37,7 @@ class NewsSearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_search, container, false)
 
@@ -116,6 +116,18 @@ class NewsSearchFragment : Fragment() {
                 searchViewModel.finishNavigationToDetailsFragment()
             }
         })
+
+        searchViewModel.savedNewsLiveData.observe(viewLifecycleOwner) {
+            searchViewModel.apply {
+            if (savedNews == null) {
+                savedNews = it
+            } else if (it != savedNews) {
+                checkForDbChanges(it)
+                savedNews = it
+                newsRecyclerViewAdapter.notifyDataSetChanged()
+            }
+            }
+        }
     }
 
     private fun setupListeners() {

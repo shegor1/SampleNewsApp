@@ -1,6 +1,7 @@
 package com.shegor.samplenewsapp.repo
 
 import androidx.lifecycle.LiveData
+import com.shegor.samplenewsapp.base.BaseRepository
 import com.shegor.samplenewsapp.service.NewsApiService
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.models.NewsResponse
@@ -14,9 +15,7 @@ import kotlinx.coroutines.withContext
 import com.shegor.samplenewsapp.newsDb
 
 
-class NewsRepo(private val newsApiService: NewsApiService) {
-
-    private val newsDatabase: NewsDatabase = newsDb
+class NewsRepo(private val newsApiService: NewsApiService, private val newsDatabase:NewsDatabase) : BaseRepository(){
 
     fun getAllNewsData(
         country: String,
