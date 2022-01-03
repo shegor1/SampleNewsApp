@@ -19,6 +19,10 @@ import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.databinding.FragmentNewsSearchBinding
 import com.shegor.samplenewsapp.utils.ACCESS_VIEW_MODEL_ERROR_TEXT
 import com.shegor.samplenewsapp.utils.hideKeyboard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class NewsSearchFragment : Fragment() {
 
@@ -134,7 +138,10 @@ class NewsSearchFragment : Fragment() {
         binding.searchBar.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text.isNotBlank()) {
-                    searchViewModel.searchNewsData(v.text.toString())
+                    //убраааать или закрыть джоб!!!!!
+                    CoroutineScope(Dispatchers.IO).launch{
+                        searchViewModel.getNewsDataByQuery(v.text.toString())
+                    }
                 } else {
                     Toast.makeText(
                         this.context,

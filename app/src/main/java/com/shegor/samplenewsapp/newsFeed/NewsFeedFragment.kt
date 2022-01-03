@@ -3,7 +3,6 @@ package com.shegor.samplenewsapp.newsFeed
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,7 +17,7 @@ import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.NewsFilterCategory
 
 class NewsFeedFragment :
-    BaseRecyclerViewFragment<NewsFeedViewModel, NewsFeedViewModel.Factory, FragmentNewsFeedBinding, NewsRepo, NewsListAdapter>(),
+    BaseRecyclerViewFragment<NewsFeedViewModel, FragmentNewsFeedBinding, NewsRepo, NewsListAdapter>(),
     BottomMenuReselection, NewsRepoInstantiating, NewsRvAdapterInstantiating,
     InternetNewsListObserversSetting, NewsNavigation {
 
@@ -30,10 +29,14 @@ class NewsFeedFragment :
 
     override fun getNavigator() = NewsFeedNavigator(viewModel)
 
-    override fun getFragmentRepository() = getRepo()
-    override fun getViewModelFactory(repo: NewsRepo): NewsFeedViewModel.Factory {
+    override fun getViewModelFactory(): BaseViewModelFactory<NewsFeedViewModel> {
         category = arguments?.getParcelable(ARG_OBJECT) ?: NewsFilterCategory.GENERAL
-        return NewsFeedViewModel.Factory(repo, category)
+        return BaseViewModelFactory(NewsFeedViewModel::class.java) {
+            NewsFeedViewModel(
+                getRepo(),
+                category
+            )
+        }
     }
 
     override fun getViewModel() = NewsFeedViewModel::class.java
@@ -57,25 +60,23 @@ class NewsFeedFragment :
             recyclerViewAdapter
         )
 
-        viewModel.filterCountryLiveData.observe(viewLifecycleOwner) {
+        viewModel.prefsLiveData.observe(viewLifecycleOwner) {
             val currentFilterCountryId = viewModel.filterCountry
             val newFilterCountryId = it.filterCountryStringId
 
             if (newFilterCountryId != currentFilterCountryId ?: -1) {
                 viewModel.filterCountry = newFilterCountryId
-                viewModel.getNewsData(category)
+                viewModel.getLatestNewsData(category)
             }
         }
 
         viewModel.status.observe(viewLifecycleOwner, { status ->
-            when (status) {
-                NewsLoadingStatus.INIT_ERROR, NewsLoadingStatus.REFRESHING_ERROR -> {
+            if (status == NewsLoadingStatus.INIT_ERROR ||  status == NewsLoadingStatus.REFRESHING_ERROR) {
                     Toast.makeText(
                         this.context,
                         getString(R.string.network_error_message),
                         Toast.LENGTH_SHORT
                     ).show()
-                }
             }
         })
     }
@@ -101,7 +102,7 @@ class NewsFeedFragment :
 
     private fun setListeners() {
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.getNewsData(category)
+            viewModel.getLatestNewsData(category)
         }
     }
 }

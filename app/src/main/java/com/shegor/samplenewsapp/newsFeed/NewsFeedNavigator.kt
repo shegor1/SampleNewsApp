@@ -4,9 +4,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.shegor.samplenewsapp.base.NewsNavigator
 
-class NewsFeedNavigator(private val viewModel: NewsFeedViewModel) : NewsNavigator() {
+class NewsFeedNavigator(viewModel: NewsFeedViewModel) : NewsNavigator(viewModel) {
 
-    override fun setNavigationObserver(fragment: Fragment) {
+    override fun setupNavigation(fragment: Fragment) {
+
+        setNavigationObserver(fragment){
+            fragment.findNavController().navigate(
+                NewsFeedTabsFragmentDirections.actionNewsFeedTabsFragmentToNewsDetailsFragment(
+                    it
+                )
+            )
+        }
 
         viewModel.navigationToDetailsFragment.observe(fragment.viewLifecycleOwner, { newsItem ->
             newsItem?.let {

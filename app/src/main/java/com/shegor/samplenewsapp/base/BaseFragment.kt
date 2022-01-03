@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 
 abstract class BaseFragment<
         VM : ViewModel,
-        F : ViewModelProvider.Factory,
         B : ViewDataBinding,
         R : BaseRepository
         > : Fragment() {
@@ -34,17 +33,14 @@ abstract class BaseFragment<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = getViewModelFactory(getFragmentRepository())
+        val factory = getViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[getViewModel()]
-
     }
 
     abstract fun getViewModel(): Class<VM>
 
     abstract val layoutId: Int
 
-    abstract fun getFragmentRepository(): R
-
-    abstract fun getViewModelFactory(repo: R): F
+    abstract fun getViewModelFactory(): BaseViewModelFactory<*>
 
 }

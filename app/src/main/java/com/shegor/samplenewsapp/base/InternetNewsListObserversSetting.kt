@@ -1,7 +1,11 @@
 package com.shegor.samplenewsapp.base
 
 import androidx.lifecycle.LifecycleOwner
+import com.shegor.samplenewsapp.base.InternetNewsListViewModel
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 interface InternetNewsListObserversSetting {
 
@@ -19,12 +23,19 @@ interface InternetNewsListObserversSetting {
             }
         })
 
-        internetNewsListViewModel.savedNewsLiveData.observe(viewLifecycleOwner) {
-            if (internetNewsListViewModel.savedNews == null) {
-                internetNewsListViewModel.savedNews = it
-            } else if (it != internetNewsListViewModel.savedNews) {
-                internetNewsListViewModel.checkForDbChanges(it)
-                internetNewsListViewModel.savedNews = it
+        internetNewsListViewModel.savedNewsLiveData.observe(viewLifecycleOwner) { dbNews ->
+            val lastSavedNews = internetNewsListViewModel.savedNews ?: run {
+                internetNewsListViewModel.savedNews = dbNews
+                return@observe
+            }
+
+            if (dbNews != lastSavedNews) {
+
+                internetNewsListViewModel.news.value?.let {
+
+                    internetNewsListViewModel.checkIfSaved(it, dbNews)
+                }
+                internetNewsListViewModel.savedNews = dbNews
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }

@@ -6,7 +6,9 @@ import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.newsDb
 import com.shegor.samplenewsapp.repo.NewsRepo
+import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
 import com.shegor.samplenewsapp.service.NewsApi
+import com.shegor.samplenewsapp.service.NewsFilterCategory
 
 class NewsSearchViewModel(application: Application) : ViewModel() {
 
@@ -31,7 +33,7 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
     val navigationToDetailsFragment: LiveData<NewsModel?>
         get() = _navigationToDetailsFragment
 
-    val savedNewsLiveData = newsRepo.getNewsFromDb()
+    val savedNewsLiveData = newsRepo.getLiveDataNewsFromDb()
 
     var savedNews: List<NewsModel>? = null
 
@@ -40,19 +42,26 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
         _status.value = NewsLoadingStatus.SEARCH_INIT
     }
 
-    fun searchNewsData(query: String) {
+//    fun getNewsDataByQuery(query: String) {
+//
+//        _status.value = NewsLoadingStatus.LOADING
+//
+//        getNewsData { newsRepo.getNewsDataByQuery(query) }
+//    }
+
+    suspend fun getNewsDataByQuery(query: String) {
 
         _status.value = NewsLoadingStatus.LOADING
-        newsRepo.getNewsDataByQuery(query, viewModelScope) { newsData ->
+        newsRepo.getNewsDataByQuery(query)?.let { newsData ->
             _news.value = newsData
             if (newsData != null) {
                 if (newsData.isEmpty())
                     _status.value = NewsLoadingStatus.NO_RESULTS
                 else _status.value = NewsLoadingStatus.DONE
             } else _status.value = NewsLoadingStatus.INIT_ERROR
-
         }
     }
+
 
     fun navigateToDetailsFragment(newsItem: NewsModel) {
         _navigationToDetailsFragment.value = newsItem

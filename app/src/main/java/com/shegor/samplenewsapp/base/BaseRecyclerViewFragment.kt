@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerViewFragment<
         VM : ViewModel,
-        F : ViewModelProvider.Factory,
         B : ViewDataBinding,
         R : BaseRepository,
-        RVA : RecyclerView.Adapter<*>
-        > : BaseFragment<VM, F, B, R>() {
+        A : RecyclerView.Adapter<*>
+        > : BaseFragment<VM, B, R>() {
 
-    protected lateinit var recyclerViewAdapter: RVA
+    protected lateinit var recyclerViewAdapter: A
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,6 +31,6 @@ abstract class BaseRecyclerViewFragment<
         }
     }
 
-    abstract fun getRvAdapter(): RVA
+    abstract fun getRvAdapter(): A
     abstract fun getRecyclerView(): RecyclerView
 }

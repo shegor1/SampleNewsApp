@@ -3,7 +3,6 @@ package com.shegor.samplenewsapp.newsBookmarks
 import android.app.Application
 import androidx.lifecycle.*
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
-import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.newsDb
 import com.shegor.samplenewsapp.repo.NewsRepo
@@ -30,7 +29,7 @@ class NewsBookmarkViewModel(application: Application) : AndroidViewModel(applica
 
         _status.value = NewsLoadingStatus.LOADING
 
-        val savedNews = newsRepo.getNewsFromDb()
+        val savedNews = newsRepo.getLiveDataNewsFromDb()
         _status.value = NewsLoadingStatus.DONE
         return savedNews
 

@@ -6,5 +6,5 @@ interface NewsNavigation {
 
     fun getNavigator(): NewsNavigator
 
-    fun setNavigationObserver(fragment: Fragment) = getNavigator().setNavigationObserver(fragment)
+    fun setNavigationObserver(fragment: Fragment) = getNavigator().setupNavigation(fragment)
 }

@@ -7,80 +7,36 @@ import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.models.NewsResponse
 import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.service.NewsFilterCategory
-import com.shegor.samplenewsapp.utils.DateUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import com.shegor.samplenewsapp.newsDb
+import retrofit2.Response
 
 
-class NewsRepo(private val newsApiService: NewsApiService, private val newsDatabase:NewsDatabase) : BaseRepository(){
+class NewsRepo(private val newsApiService: NewsApiService, private val newsDatabase: NewsDatabase) :
+    BaseRepository() {
 
-    fun getAllNewsData(
-        country: String,
-        category: NewsFilterCategory,
-        viewModelScope: CoroutineScope,
-        callback: (List<NewsModel>?) -> Unit,
-    ) {
-        viewModelScope.launch {
-            try {
-                val response = newsApiService.getNewsData(country, category.categoryFilter)
-                processingResponse(response, callback)
-            } catch (e: Exception) {
-                callback(null)
-            }
-        }
+    companion object {
+        private const val networkErrorMessage = "Error fetching news"
     }
 
+    suspend fun getLatestNews(country: String, category: NewsFilterCategory): List<NewsModel>? =
+        getNewsData { newsApiService.getNewsDataAsync(country, category.categoryFilter).await() }
 
-    fun getNewsDataByQuery(
-        query: String,
-        viewModelScope: CoroutineScope,
-        callback: (List<NewsModel>?) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val response = newsApiService.getNewsDataByQuery(query)
-                processingResponse(response, callback)
-            } catch (e: Exception) {
-                callback(null)
-            }
-        }
-    }
 
-    private suspend fun processingResponse(
-        newsResponse: NewsResponse?,
-        callback: (List<NewsModel>?) -> Unit
-    ) {
-        var newsList = newsResponse?.articles ?: return callback(listOf())
+    suspend fun getNewsDataByQuery(query: String): List<NewsModel>? =
+        getNewsData { newsApiService.getNewsDataByQueryAsync(query).await() }
 
-        withContext(Dispatchers.IO) {
 
-            newsList = checkIfSaved(newsList)
-            newsList = sortNewsByDate(newsList)
+    private suspend fun getNewsData(networkCall: suspend () -> Response<NewsResponse>): List<NewsModel>? =
+        apiCall(call = networkCall, error = networkErrorMessage)?.articles?.toList()
 
-            withContext(Dispatchers.Main) {
-                callback(newsList)
-            }
-        }
-    }
-
-    private fun checkIfSaved(networkNewsList: List<NewsModel>): List<NewsModel> {
-        val savedNewsList = newsDatabase.newsDao.getAllNews()
-
-        networkNewsList.forEach { networkNewsItem ->
-            networkNewsItem.saved = savedNewsList.contains(networkNewsItem)
-        }
-        return networkNewsList
-    }
-
-    private fun sortNewsByDate(newsList: List<NewsModel>): List<NewsModel> {
-        return newsList.sortedByDescending { DateUtils.jsonDateToLocalDate(it.pubDate) }
-    }
-
-    fun getNewsFromDb(): LiveData<List<NewsModel>> {
+    fun getLiveDataNewsFromDb(): LiveData<List<NewsModel>> {
         return newsDatabase.newsDao.getAllNewsLiveData()
+    }
+
+    fun getNewsFromDb(): List<NewsModel> {
+        return newsDatabase.newsDao.getAllNews()
     }
 
     fun saveNewsItem(news: NewsModel) {
