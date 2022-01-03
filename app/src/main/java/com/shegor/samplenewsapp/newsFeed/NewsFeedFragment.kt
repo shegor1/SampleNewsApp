@@ -43,9 +43,7 @@ class NewsFeedFragment :
 
     override val layoutId = R.layout.fragment_news_feed
 
-    override fun getRvAdapter() = getNewsRvAdapter { newsItem, clickedViewId ->
-        NewsClickListener().onClick(clickedViewId, newsItem, viewModel)
-    }
+    override fun getRvAdapter() = getNewsRvAdapter (viewModel)
 
     override fun getRecyclerView() = binding.newsRecyclerView
 

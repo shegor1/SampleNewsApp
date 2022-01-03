@@ -1,74 +1,26 @@
 package com.shegor.samplenewsapp.newsSearch
 
-import android.app.Application
 import androidx.lifecycle.*
+import com.shegor.samplenewsapp.base.InternetNewsListViewModel
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
-import com.shegor.samplenewsapp.models.NewsModel
-import com.shegor.samplenewsapp.newsDb
 import com.shegor.samplenewsapp.repo.NewsRepo
-import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
-import com.shegor.samplenewsapp.service.NewsApi
-import com.shegor.samplenewsapp.service.NewsFilterCategory
 
-class NewsSearchViewModel(application: Application) : ViewModel() {
-
-
-    var newsRepo = NewsRepo(
-        NewsApi.newsRetrofitService, newsDb
-    )
-
-    private val _status = MutableLiveData<NewsLoadingStatus>()
-    val status: LiveData<NewsLoadingStatus>
-        get() = _status
-
-    private val _news = MutableLiveData<List<NewsModel>>()
-    val news: LiveData<List<NewsModel>>
-        get() = _news
+class NewsSearchViewModel(repo: NewsRepo) : InternetNewsListViewModel(repo) {
 
     private val _clearSearchBarAction = MutableLiveData<Boolean>()
     val clearSearchBarAction: LiveData<Boolean>
         get() = _clearSearchBarAction
-
-    private val _navigationToDetailsFragment = MutableLiveData<NewsModel?>()
-    val navigationToDetailsFragment: LiveData<NewsModel?>
-        get() = _navigationToDetailsFragment
-
-    val savedNewsLiveData = newsRepo.getLiveDataNewsFromDb()
-
-    var savedNews: List<NewsModel>? = null
 
 
     init {
         _status.value = NewsLoadingStatus.SEARCH_INIT
     }
 
-//    fun getNewsDataByQuery(query: String) {
-//
-//        _status.value = NewsLoadingStatus.LOADING
-//
-//        getNewsData { newsRepo.getNewsDataByQuery(query) }
-//    }
-
-    suspend fun getNewsDataByQuery(query: String) {
+    fun getNewsDataByQuery(query: String) {
 
         _status.value = NewsLoadingStatus.LOADING
-        newsRepo.getNewsDataByQuery(query)?.let { newsData ->
-            _news.value = newsData
-            if (newsData != null) {
-                if (newsData.isEmpty())
-                    _status.value = NewsLoadingStatus.NO_RESULTS
-                else _status.value = NewsLoadingStatus.DONE
-            } else _status.value = NewsLoadingStatus.INIT_ERROR
-        }
-    }
 
-
-    fun navigateToDetailsFragment(newsItem: NewsModel) {
-        _navigationToDetailsFragment.value = newsItem
-    }
-
-    fun finishNavigationToDetailsFragment() {
-        _navigationToDetailsFragment.value = null
+        getNewsData { newsRepo.getNewsDataByQuery(query) }
     }
 
     fun clearSearchBar() {
@@ -78,37 +30,4 @@ class NewsSearchViewModel(application: Application) : ViewModel() {
     fun finishClearingSearchBar() {
         _clearSearchBarAction.value = false
     }
-
-    fun saveOrDeleteBookmark(newsItem: NewsModel) {
-        val currentNews = _news.value?.find { newsItem == it }
-        currentNews?.let { currentNews ->
-            if (newsItem.saved) {
-                newsRepo.deleteNewsItem(currentNews)
-                currentNews.saved = false
-            } else {
-                currentNews.saved = true
-                newsRepo.saveNewsItem(currentNews)
-            }
-        }
-    }
-
-    fun checkForDbChanges(dbNewsList: List<NewsModel>): List<NewsModel>? {
-        val networkNewsList = news.value
-        networkNewsList?.forEach { networkNewsItem ->
-            networkNewsItem.saved = dbNewsList.contains(networkNewsItem)
-        }
-        return networkNewsList
-    }
-
-    class Factory(val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(NewsSearchViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return NewsSearchViewModel(app) as T
-            }
-            throw IllegalArgumentException("Unable to construct viewModel")
-        }
-    }
-
-
 }
