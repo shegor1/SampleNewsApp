@@ -12,7 +12,7 @@ abstract class BaseRecyclerViewFragment<
         B : ViewDataBinding,
         R : BaseRepository,
         A : RecyclerView.Adapter<*>
-        > : BaseFragment<VM, B, R>() {
+        > : BaseFragment<VM, B>() {
 
     protected lateinit var recyclerViewAdapter: A
 

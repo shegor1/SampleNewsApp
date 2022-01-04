@@ -15,18 +15,18 @@ interface BottomMenuReselection {
         navController: NavController,
         recyclerView: RecyclerView?
     ) {
-        activity.findViewById<BottomNavigationView>(R.id.bottomNavMenu)
-            ?.setOnItemReselectedListener { item ->
-                lifecycleScope.launchWhenResumed {
-                    val reselectedDestinationId = item.itemId
-                    if (navController.currentDestination?.id ?: -1 == reselectedDestinationId) {
-                        recyclerView?.let {
-                            it.layoutManager?.scrollToPosition(0)
-                        }
-                    } else {
-                        navController.popBackStack(reselectedDestinationId, inclusive = false)
-                    }
-                }
-            }
+//        activity.findViewById<BottomNavigationView>(R.id.bottomNavMenu)
+//            ?.setOnItemReselectedListener { item ->
+//                lifecycleScope.launchWhenResumed {
+//                    val reselectedDestinationId = item.itemId
+//                    if (navController.currentDestination?.id ?: -1 == reselectedDestinationId) {
+//                        recyclerView?.let {
+//                            it.layoutManager?.scrollToPosition(0)
+//                        }
+//                    } else {
+//                        navController.popBackStack(reselectedDestinationId, inclusive = false)
+//                    }
+//                }
+//            }
     }
 }

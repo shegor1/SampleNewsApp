@@ -5,7 +5,7 @@ import com.shegor.samplenewsapp.adapters.NewsListAdapter
 
 interface NewsRvAdapterInstantiating {
 
-    fun getNewsRvAdapter(viewModel: NewsViewModel): NewsListAdapter =
+    fun getNewsRvAdapter(viewModel: NewsListViewModel): NewsListAdapter =
         NewsListAdapter(NewsClickListener { newsItem, clickedViewId ->
             NewsClickListener().onClick(clickedViewId, newsItem, viewModel)
         })

@@ -7,7 +7,9 @@ import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 
-abstract class NewsViewModel(protected open val newsRepo: NewsRepo) : ViewModel() {
+abstract class NewsListViewModel(override val newsRepo: NewsRepo) : ViewModel(), SaveOrDeleteBookmark {
+
+    abstract val news: LiveData<List<NewsModel>>
 
     protected val _status = MutableLiveData<NewsLoadingStatus>()
     val status: LiveData<NewsLoadingStatus>
@@ -24,13 +26,5 @@ abstract class NewsViewModel(protected open val newsRepo: NewsRepo) : ViewModel(
 
     fun finishNavigationToDetailsFragment() {
         _navigationToDetailsFragment.value = null
-    }
-
-    fun saveOrDeleteBookmark(newsItem: NewsModel) {
-
-        newsItem.let {
-            if (newsItem.saved) newsRepo.deleteNewsItem(newsItem) else newsItem.saved =
-                true.also { newsRepo.saveNewsItem(newsItem) }
-        }
     }
 }

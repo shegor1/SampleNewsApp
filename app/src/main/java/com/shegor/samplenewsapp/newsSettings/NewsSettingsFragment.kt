@@ -1,47 +1,34 @@
 package com.shegor.samplenewsapp.newsSettings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.shegor.samplenewsapp.R
+import com.shegor.samplenewsapp.base.BaseFragment
 import com.shegor.samplenewsapp.databinding.FragmentNewsSettingsBinding
 import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
 
-class NewsSettingsFragment : Fragment() {
+class NewsSettingsFragment : BaseFragment<NewsSettingsViewModel, FragmentNewsSettingsBinding>() {
 
     companion object {
         const val FILTER_COUNTRY_MENU_GROUP_ID = 1
     }
 
-    private lateinit var binding: FragmentNewsSettingsBinding
-
-    private val settingsViewModel: NewsSettingsViewModel by lazy {
-        ViewModelProvider(this)[NewsSettingsViewModel::class.java]
-    }
-
     private lateinit var popupMenu: PopupMenu
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun getViewModel() = NewsSettingsViewModel::class.java
 
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_news_settings, container, false)
+    override val layoutId = R.layout.fragment_news_settings
 
+    override fun getViewModelFactory() = defaultViewModelProviderFactory
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setupCountrySelectPopupMenu()
         setupObservers()
-
-        return binding.root
     }
-
 
     private fun setupObservers() {
         prefs.userPreferencesFlow.observe(viewLifecycleOwner) {
@@ -58,7 +45,7 @@ class NewsSettingsFragment : Fragment() {
             val countries =
                 FILTER_COUNTRIES.map { Pair(it.key, requireContext().getString(it.key)) }
 
-            countries.sortedBy { it.second }.forEachIndexed{index, country ->
+            countries.sortedBy { it.second }.forEachIndexed { index, country ->
                 popupMenu.menu.add(
                     FILTER_COUNTRY_MENU_GROUP_ID,
                     country.first,
@@ -84,7 +71,8 @@ class NewsSettingsFragment : Fragment() {
     }
 
     private fun saveChosenCountry(countryStringId: Int) {
-        settingsViewModel.saveChosenCountry(countryStringId)
+        viewModel.saveChosenCountry(countryStringId)
     }
+
 
 }

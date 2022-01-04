@@ -11,24 +11,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsViewModel(newsRepo),
+abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel(newsRepo),
     InternetNewsListObserversSetting {
 
-    protected val _news = MutableLiveData<List<NewsModel>>()
-    val news: LiveData<List<NewsModel>>
+    private val _news = MutableLiveData<List<NewsModel>>()
+    override val news: LiveData<List<NewsModel>>
         get() = _news
 
     val savedNewsLiveData = newsRepo.getLiveDataNewsFromDb()
 
     var savedNews: List<NewsModel>? = null
-
-//    fun checkForDbChanges(dbNewsList: List<NewsModel>): List<NewsModel>? {
-//        val networkNewsList = news.value
-//        networkNewsList?.forEach { networkNewsItem ->
-//            networkNewsItem.saved = dbNewsList.contains(networkNewsItem)
-//        }
-//        return networkNewsList
-//    }
 
     protected fun getNewsData(networkRepoCall: suspend () -> List<NewsModel>?) {
         viewModelScope.launch {
