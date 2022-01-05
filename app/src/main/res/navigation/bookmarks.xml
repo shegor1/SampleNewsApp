@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookmarks"
+    app:startDestination="@id/newsBookmarksFragment">
+
+
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.shegor.samplenewsapp.newsDetails.NewsDetailsFragment"
+        android:label="NewsDetailsFragment"
+        tools:layout="@layout/fragment_news_details">
+        <argument
+            android:name="newsItem"
+            app:argType="com.shegor.samplenewsapp.models.NewsModel" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/newsBookmarksFragment"
+        android:name="com.shegor.samplenewsapp.newsBookmarks.NewsBookmarksFragment"
+        android:label="NewsBookmarksFragment">
+        <action
+            android:id="@+id/action_newsBookmarksFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+
+</navigation>
