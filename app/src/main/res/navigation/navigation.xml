@@ -1,48 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/newsFeedTabsFragment">
+    app:startDestination="@id/feed">
 
-    <fragment
-        android:id="@+id/newsDetailsFragment"
-        android:name="com.shegor.samplenewsapp.newsDetails.NewsDetailsFragment"
-        android:label="NewsDetailsFragment"
-        tools:layout="@layout/fragment_news_details">
-        <argument
-            android:name="newsItem"
-            app:argType="com.shegor.samplenewsapp.models.NewsModel" />
-    </fragment>
-    <fragment
-        android:id="@+id/newsSearchFragment"
-        android:name="com.shegor.samplenewsapp.newsSearch.NewsSearchFragment"
-        android:label="NewsSearchFragment"
-        tools:layout="@layout/fragment_news_search">
-        <action
-            android:id="@+id/action_newsSearchFragment_to_newsDetailsFragment"
-            app:destination="@id/newsDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newsSettingsFragment"
-        android:name="com.shegor.samplenewsapp.newsSettings.NewsSettingsFragment"
-        android:label="NewsSettingsFragment"
-        tools:layout="@layout/fragment_news_settings" />
-    <fragment
-        android:id="@+id/newsFeedTabsFragment"
-        android:name="com.shegor.samplenewsapp.newsFeed.NewsFeedTabsFragment"
-        android:label="NewsFeedTabsFragment">
-        <action
-            android:id="@+id/action_newsFeedTabsFragment_to_newsDetailsFragment"
-            app:destination="@id/newsDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newsBookmarksFragment"
-        android:name="com.shegor.samplenewsapp.newsBookmarks.NewsBookmarksFragment"
-        android:label="NewsBookmarksFragment">
-        <action
-            android:id="@+id/action_newsBookmarksFragment_to_newsDetailsFragment"
-            app:destination="@id/newsDetailsFragment" />
-    </fragment>
+    <include app:graph="@navigation/feed"/>
+    <include app:graph="@navigation/search"/>
+    <include app:graph="@navigation/bookmarks"/>
+    <include app:graph="@navigation/settings"/>
 
 </navigation>

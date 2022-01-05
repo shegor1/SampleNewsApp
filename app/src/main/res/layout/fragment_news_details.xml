@@ -8,6 +8,10 @@
         <variable
             name="currentNews"
             type="com.shegor.samplenewsapp.models.NewsModel" />
+
+        <variable
+            name="viewModel"
+            type="com.shegor.samplenewsapp.newsDetails.NewsDetailsViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -63,11 +67,12 @@
                 android:layout_height="30dp"
                 android:layout_gravity="top|end"
                 android:layout_marginEnd="8dp"
-                android:background="@{currentNews.saved?@drawable/ic_bookmark_saved:@drawable/ic_bookmark}"
+                android:background="@{viewModel.bookmarkButtonState ? @drawable/ic_bookmark_saved : @drawable/ic_bookmark}"
                 app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/titleTextView"
-                tools:background="@drawable/ic_bookmark" />
+                tools:background="@drawable/ic_bookmark"
+                />
 
             <TextView
                 android:id="@+id/pubDateTextView"
