@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseFragment<
-        VM : ViewModel,
-        B : ViewDataBinding
-        > : Fragment() {
+abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
 
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
@@ -36,9 +33,9 @@ abstract class BaseFragment<
         viewModel = ViewModelProvider(this, factory)[getViewModel()]
     }
 
-    abstract fun getViewModel(): Class<VM>
-
     abstract val layoutId: Int
+
+    abstract fun getViewModel(): Class<VM>
 
     abstract fun getViewModelFactory(): ViewModelProvider.Factory
 

@@ -4,25 +4,25 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.base.*
+import com.shegor.samplenewsapp.base.internetNews.InternetNewsListObserversSetting
+import com.shegor.samplenewsapp.base.news.BottomMenuReselection
+import com.shegor.samplenewsapp.base.NavigationSetting
+import com.shegor.samplenewsapp.base.news.NewsRepoInstantiating
+import com.shegor.samplenewsapp.base.newsList.NewsRvAdapterInstantiating
 import com.shegor.samplenewsapp.databinding.FragmentNewsSearchBinding
-import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.utils.hideKeyboard
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class NewsSearchFragment :
-    BaseRecyclerViewFragment<NewsSearchViewModel, FragmentNewsSearchBinding, NewsRepo, NewsListAdapter>(),
+    BaseRecyclerViewFragment<NewsSearchViewModel, FragmentNewsSearchBinding, NewsListAdapter>(),
     BottomMenuReselection, NewsRepoInstantiating, NewsRvAdapterInstantiating,
-    InternetNewsListObserversSetting, NewsNavigation {
+    InternetNewsListObserversSetting, NavigationSetting {
 
     override fun getNavigator() = NewsSearchNavigator(viewModel)
 
+    override val fragment = this
 
     override fun getViewModel() = NewsSearchViewModel::class.java
 
@@ -34,16 +34,19 @@ class NewsSearchFragment :
 
     override fun getRecyclerView() = binding.searchRecyclerView
 
-    override fun setInternetNewsObservers(
-        internetNewsListViewModel: InternetNewsListViewModel,
-        viewLifecycleOwner: LifecycleOwner,
-        recyclerViewAdapter: NewsListAdapter
-    ) {
-        super.setInternetNewsObservers(
-            internetNewsListViewModel,
-            viewLifecycleOwner,
-            recyclerViewAdapter
-        )
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        connectDataBinding()
+        setItemReselectedListener(binding.searchRecyclerView)
+        setObservers()
+        setupListeners()
+    }
+
+    private fun setObservers() {
+        setInternetNewsObservers(viewModel, recyclerViewAdapter)
+        setNavigationObserver(this)
 
         viewModel.clearSearchBarAction.observe(viewLifecycleOwner, { isClicked ->
             if (isClicked) {
@@ -53,28 +56,13 @@ class NewsSearchFragment :
         })
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        connectDataBinding()
-        setItemReselectedListener(
-            requireActivity(),
-            lifecycleScope,
-            findNavController(),
-            binding.searchRecyclerView
-        )
-
-        setInternetNewsObservers(viewModel, viewLifecycleOwner, recyclerViewAdapter)
-        setNavigationObserver(this)
-        setupListeners()
-    }
-
 
     private fun connectDataBinding() {
         binding.searchViewModel = viewModel
     }
 
     private fun setupListeners() {
+
         binding.searchBar.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text.isNotBlank()) {

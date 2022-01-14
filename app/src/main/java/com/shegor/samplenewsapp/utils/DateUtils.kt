@@ -7,13 +7,18 @@ import java.time.format.DateTimeFormatter
 
 object DateUtils {
 
-    private val jsonDateFormatter: DateTimeFormatter =
+    private val jsonDateFormatter: DateTimeFormatter by lazy {
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private val fullDateFormatter: DateTimeFormatter =
+    }
+    private val fullDateFormatter: DateTimeFormatter by lazy {
         DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-    private val daysMonthsDateFormatter: DateTimeFormatter =
+    }
+    private val daysMonthsDateFormatter: DateTimeFormatter by lazy {
         DateTimeFormatter.ofPattern("dd MMMM HH:mm")
-    private val timeDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    }
+    private val timeDateFormatter: DateTimeFormatter by lazy {
+        DateTimeFormatter.ofPattern("HH:mm")
+    }
 
 
     fun jsonDateToLocalDate(jsonDate: String?): LocalDateTime =

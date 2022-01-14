@@ -1,7 +1,7 @@
 package com.shegor.samplenewsapp.newsSearch
 
 import androidx.lifecycle.*
-import com.shegor.samplenewsapp.base.InternetNewsListViewModel
+import com.shegor.samplenewsapp.base.internetNews.InternetNewsListViewModel
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 import com.shegor.samplenewsapp.repo.NewsRepo
 

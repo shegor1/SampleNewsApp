@@ -1,6 +1,7 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.newsList
 
 import com.shegor.samplenewsapp.R
+import com.shegor.samplenewsapp.base.newsList.NewsListViewModel
 import com.shegor.samplenewsapp.models.NewsModel
 
 class NewsClickListener {

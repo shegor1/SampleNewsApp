@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.newsList
 
 import androidx.lifecycle.LifecycleOwner
 import com.shegor.samplenewsapp.adapters.NewsListAdapter

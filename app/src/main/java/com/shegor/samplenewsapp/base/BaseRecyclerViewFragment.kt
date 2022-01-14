@@ -7,12 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerViewFragment<
-        VM : ViewModel,
-        B : ViewDataBinding,
-        R : BaseRepository,
-        A : RecyclerView.Adapter<*>
-        > : BaseFragment<VM, B>() {
+abstract class BaseRecyclerViewFragment<VM : ViewModel, B : ViewDataBinding, A : RecyclerView.Adapter<*>> :
+    BaseFragment<VM, B>() {
 
     protected lateinit var recyclerViewAdapter: A
 

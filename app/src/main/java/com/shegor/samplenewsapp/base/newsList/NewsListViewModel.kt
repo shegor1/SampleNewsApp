@@ -1,13 +1,15 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.newsList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.shegor.samplenewsapp.base.news.SaveOrDeleteBookmark
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 
-abstract class NewsListViewModel(override val newsRepo: NewsRepo) : ViewModel(), SaveOrDeleteBookmark {
+abstract class NewsListViewModel(override val newsRepo: NewsRepo) : ViewModel(),
+    SaveOrDeleteBookmark {
 
     abstract val news: LiveData<List<NewsModel>>
 

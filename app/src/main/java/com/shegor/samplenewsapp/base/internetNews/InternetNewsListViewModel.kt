@@ -1,8 +1,9 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.internetNews
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shegor.samplenewsapp.base.newsList.NewsListViewModel
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.utils.DateUtils
@@ -11,8 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel(newsRepo),
-    InternetNewsListObserversSetting {
+abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel(newsRepo) {
 
     private val _news = MutableLiveData<List<NewsModel>>()
     override val news: LiveData<List<NewsModel>>
@@ -50,7 +50,10 @@ abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel
         else _status.value = NewsLoadingStatus.REFRESHING_ERROR
     }
 
-    fun checkIfSaved(networkNewsList: List<NewsModel>, savedNewsList: List<NewsModel>): List<NewsModel> {
+    fun checkIfSaved(
+        networkNewsList: List<NewsModel>,
+        savedNewsList: List<NewsModel>
+    ): List<NewsModel> {
 
         return networkNewsList.map { networkNewsItem ->
             networkNewsItem.saved = savedNewsList.contains(networkNewsItem)

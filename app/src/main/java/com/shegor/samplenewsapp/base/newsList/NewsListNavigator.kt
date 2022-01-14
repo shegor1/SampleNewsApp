@@ -1,11 +1,12 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.newsList
 
 import androidx.fragment.app.Fragment
+import com.shegor.samplenewsapp.base.BaseNavigator
 import com.shegor.samplenewsapp.models.NewsModel
 
-abstract class NewsNavigator(protected open val viewModel: NewsListViewModel) {
+abstract class NewsListNavigator(protected open val viewModel: NewsListViewModel) : BaseNavigator(){
 
-    fun setNavigationObserver(fragment: Fragment, navigate: (newsItem: NewsModel) -> Unit) {
+    fun setNavToDetailsFragmentObserver(fragment: Fragment, navigate: (newsItem: NewsModel) -> Unit) {
 
             viewModel.navigationToDetailsFragment.observe(fragment.viewLifecycleOwner, { newsItem ->
                 newsItem?.let {
@@ -14,5 +15,4 @@ abstract class NewsNavigator(protected open val viewModel: NewsListViewModel) {
                 }
             })
         }
-    abstract fun setupNavigation(fragment: Fragment)
     }

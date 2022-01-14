@@ -1,34 +1,34 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.news
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.get
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shegor.samplenewsapp.R
 
 interface BottomMenuReselection {
 
+    val fragment: Fragment
+
     fun setItemReselectedListener(
-        activity: FragmentActivity,
-        lifecycleScope: LifecycleCoroutineScope,
-        navController: NavController,
         recyclerView: RecyclerView?
     ) {
-        activity.findViewById<BottomNavigationView>(R.id.bottomNavMenu)
+        fragment.requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavMenu)
             ?.setOnItemReselectedListener {
-                lifecycleScope.launchWhenResumed {
+                fragment.lifecycleScope.launchWhenResumed {
 
-                    val currentDestination = navController.currentDestination
+                    val currentDestination = fragment.findNavController().currentDestination
 
                     if (currentDestination?.parent?.startDestinationId ?: -1 == currentDestination?.id) {
                         recyclerView?.let {
                             it.layoutManager?.scrollToPosition(0)
                         }
                     } else {
-                        activity.onBackPressed()
+                        fragment.requireActivity().onBackPressed()
                     }
                 }
             }

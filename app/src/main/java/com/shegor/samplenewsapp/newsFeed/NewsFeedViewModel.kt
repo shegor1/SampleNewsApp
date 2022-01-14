@@ -1,6 +1,6 @@
 package com.shegor.samplenewsapp.newsFeed
 
-import com.shegor.samplenewsapp.base.InternetNewsListViewModel
+import com.shegor.samplenewsapp.base.internetNews.InternetNewsListViewModel
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.repo.NewsRepo

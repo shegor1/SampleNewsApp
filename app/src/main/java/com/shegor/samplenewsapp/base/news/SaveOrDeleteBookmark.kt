@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.news
 
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo

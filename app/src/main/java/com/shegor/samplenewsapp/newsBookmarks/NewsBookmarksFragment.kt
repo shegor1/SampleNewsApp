@@ -1,30 +1,24 @@
 package com.shegor.samplenewsapp.newsBookmarks
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.base.*
+import com.shegor.samplenewsapp.base.news.BottomMenuReselection
+import com.shegor.samplenewsapp.base.NavigationSetting
+import com.shegor.samplenewsapp.base.newsList.NewsListNavigator
+import com.shegor.samplenewsapp.base.news.NewsRepoInstantiating
+import com.shegor.samplenewsapp.base.newsList.NewsRvAdapterInstantiating
+import com.shegor.samplenewsapp.base.newsList.NewsListObserversSetting
 import com.shegor.samplenewsapp.databinding.FragmentNewsBookmarksBinding
-import com.shegor.samplenewsapp.databinding.FragmentNewsFeedBinding
-import com.shegor.samplenewsapp.newsFeed.NewsFeedViewModel
-import com.shegor.samplenewsapp.repo.NewsRepo
-import com.shegor.samplenewsapp.utils.ACCESS_VIEW_MODEL_ERROR_TEXT
 
 class NewsBookmarksFragment :
-    BaseRecyclerViewFragment<NewsBookmarksViewModel, FragmentNewsBookmarksBinding, NewsRepo, NewsListAdapter>(),
-    BottomMenuReselection, NewsRepoInstantiating, NewsRvAdapterInstantiating, NewsNavigation,
+    BaseRecyclerViewFragment<NewsBookmarksViewModel, FragmentNewsBookmarksBinding, NewsListAdapter>(),
+    BottomMenuReselection, NewsRepoInstantiating, NewsRvAdapterInstantiating, NavigationSetting,
     NewsListObserversSetting {
+
+    override val fragment = this
 
     override fun getViewModel() = NewsBookmarksViewModel::class.java
 
@@ -37,18 +31,18 @@ class NewsBookmarksFragment :
 
     override fun getRecyclerView() = binding.newsRecyclerView
 
-    override fun getNavigator(): NewsNavigator = NewsBookmarksNavigator(viewModel)
+    override fun getNavigator(): NewsListNavigator = NewsBookmarksNavigator(viewModel)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         connectDataBinding()
-        setItemReselectedListener(
-            requireActivity(),
-            lifecycleScope,
-            findNavController(),
-            binding.newsRecyclerView
-        )
+        setItemReselectedListener(binding.newsRecyclerView)
+        setObservers()
+
+    }
+
+    private fun setObservers() {
         setNavigationObserver(this)
         setNewsObservers(viewModel, viewLifecycleOwner, recyclerViewAdapter)
     }

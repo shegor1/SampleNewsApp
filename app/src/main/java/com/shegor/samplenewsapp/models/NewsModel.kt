@@ -17,23 +17,23 @@ data class NewsResponse(
 data class NewsModel(
 
     @PrimaryKey()
-    var title: String = "",
+    var title: String,
 
     @ColumnInfo(name = "publication_date") @Json(name = "publishedAt")
-    var pubDate: String? = null,
+    var pubDate: String?,
 
     @ColumnInfo(name = "title_image_url") @Json(name = "urlToImage")
-    var imageUrl: String? = null,
+    var imageUrl: String?,
 
-    var author: String? = null,
+    var author: String?,
 
     @Json(name = "url")
-    var sourceUrl: String? = null,
+    var sourceUrl: String?,
 
     //Описание новости взято за ее содержание, так как бесплатный новостной api
     // выдает некорректное содержание, в особенности для русских новостей
     @Json(name = "description")
-    var description: String? = null,
+    var description: String?,
 ) : Parcelable {
 
     var saved: Boolean = false

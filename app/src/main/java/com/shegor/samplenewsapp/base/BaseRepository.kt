@@ -8,7 +8,6 @@ import java.io.IOException
 
 abstract class BaseRepository {
 
-
     suspend fun <T : Any> apiCall(call : suspend() -> Response<T>, error: String) : T?{
         val result = apiOutput(call, error)
 
@@ -25,6 +24,6 @@ abstract class BaseRepository {
         return if (response.isSuccessful)
             NetworkOutput.Success(response.body()!!)
         else
-            NetworkOutput.Error(IOException("Something went wrong dur to $error"))
+            NetworkOutput.Error(IOException("Something went wrong due to $error"))
     }
 }
