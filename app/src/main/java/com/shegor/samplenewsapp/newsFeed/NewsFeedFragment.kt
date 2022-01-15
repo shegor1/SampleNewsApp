@@ -22,20 +22,19 @@ class NewsFeedFragment :
         const val ARG_OBJECT = "filterCategory"
     }
 
-    private lateinit var category: NewsFilterCategory
-
     override val fragment = this
 
     override val layoutId = R.layout.fragment_news_feed
 
     override fun getViewModel() = NewsFeedViewModel::class.java
 
-    override fun getViewModelFactory(): BaseViewModelFactory<NewsFeedViewModel> {
-        category = arguments?.getParcelable(ARG_OBJECT) ?: NewsFilterCategory.GENERAL
-        return BaseViewModelFactory(NewsFeedViewModel::class.java) {
-            NewsFeedViewModel(getRepo(), category)
+    override fun getViewModelFactory(): BaseViewModelFactory<NewsFeedViewModel> =
+        BaseViewModelFactory(NewsFeedViewModel::class.java) {
+            NewsFeedViewModel(
+                getRepo(),
+                arguments?.getParcelable(ARG_OBJECT) ?: NewsFilterCategory.GENERAL
+            )
         }
-    }
 
     override fun getRvAdapter() = getNewsRvAdapter(viewModel)
 
@@ -49,7 +48,6 @@ class NewsFeedFragment :
         connectDataBinding()
         setItemReselectedListener(binding.newsRecyclerView)
         setInternetNewsObservers(viewModel, recyclerViewAdapter)
-        setPrefsObservers()
         setNavigationObserver(this)
         setListeners()
     }
@@ -58,21 +56,9 @@ class NewsFeedFragment :
         binding.newsViewModel = viewModel
     }
 
-    private fun setPrefsObservers() {
-        viewModel.prefsLiveData.observe(viewLifecycleOwner) {
-            val currentFilterCountryId = viewModel.filterCountry
-            val newFilterCountryId = it.filterCountryStringId
-
-            if (newFilterCountryId != currentFilterCountryId ?: -1) {
-                viewModel.filterCountry = newFilterCountryId
-                viewModel.getLatestNewsData(category)
-            }
-        }
-    }
-
     private fun setListeners() {
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.getLatestNewsData(category)
+            viewModel.getLatestNewsData()
         }
     }
 }

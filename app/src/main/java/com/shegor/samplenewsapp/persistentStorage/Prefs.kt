@@ -17,7 +17,9 @@ class Prefs(private val dataStore: DataStore<Preferences>) {
         val FILTER_COUNTRY = intPreferencesKey("filter_country")
     }
 
-    val userPreferencesFlow: LiveData<UserPreferences> = dataStore.data
+
+
+    val userPreferencesLiveData: LiveData<UserPreferences> = dataStore.data
         .catch { exception ->
             when (exception) {
                 is IOException -> emit(emptyPreferences())

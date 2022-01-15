@@ -31,7 +31,7 @@ class NewsSettingsFragment : BaseFragment<NewsSettingsViewModel, FragmentNewsSet
     }
 
     private fun setupObservers() {
-        prefs.userPreferencesFlow.observe(viewLifecycleOwner) {
+        prefs.userPreferencesLiveData.observe(viewLifecycleOwner) {
             binding.currentFilterCountry.text = requireContext().getString(it.filterCountryStringId)
         }
     }

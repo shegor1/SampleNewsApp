@@ -3,6 +3,7 @@ package com.shegor.samplenewsapp.base.internetNews
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shegor.samplenewsapp.DeletedNews
 import com.shegor.samplenewsapp.base.newsList.NewsListViewModel
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
@@ -18,9 +19,17 @@ abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel
     override val news: LiveData<List<NewsModel>>
         get() = _news
 
-    val savedNewsLiveData = newsRepo.getLiveDataNewsFromDb()
+    private var deletedNewsObserver: (deletedNewsTitle: String?) -> Unit = { deletedNewsTitle ->
+        deletedNewsTitle?.let { deletedNewsTitle ->
+            _news.value?.let { newsList ->
+                newsList.map { if (it.title == deletedNewsTitle) it.saved = false }
+            }
+        }
+    }
 
-    var savedNews: List<NewsModel>? = null
+    init {
+        DeletedNews.newsToDelete.observeForever(deletedNewsObserver)
+    }
 
     protected fun getNewsData(networkRepoCall: suspend () -> List<NewsModel>?) {
         viewModelScope.launch {
@@ -64,4 +73,9 @@ abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel
     private fun sortNewsByDate(newsList: List<NewsModel>): List<NewsModel> =
         newsList.sortedByDescending { DateUtils.jsonDateToLocalDate(it.pubDate) }
 
+
+    override fun onCleared() {
+        DeletedNews.newsToDelete.removeObserver(deletedNewsObserver)
+        super.onCleared()
+    }
 }
