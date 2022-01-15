@@ -10,14 +10,14 @@ import com.shegor.samplenewsapp.base.*
 import com.shegor.samplenewsapp.base.internetNews.InternetNewsListObserversSetting
 import com.shegor.samplenewsapp.base.news.BottomMenuReselection
 import com.shegor.samplenewsapp.base.NavigationSetting
-import com.shegor.samplenewsapp.base.news.NewsRepoInstantiating
+import com.shegor.samplenewsapp.base.news.NewsRepoInitiating
 import com.shegor.samplenewsapp.base.newsList.NewsRvAdapterInstantiating
 import com.shegor.samplenewsapp.databinding.FragmentNewsSearchBinding
 import com.shegor.samplenewsapp.utils.hideKeyboard
 
 class NewsSearchFragment :
     BaseRecyclerViewFragment<NewsSearchViewModel, FragmentNewsSearchBinding, NewsListAdapter>(),
-    BottomMenuReselection, NewsRepoInstantiating, NewsRvAdapterInstantiating,
+    BottomMenuReselection, NewsRepoInitiating, NewsRvAdapterInstantiating,
     InternetNewsListObserversSetting, NavigationSetting {
 
     override fun getNavigator() = NewsSearchNavigator(viewModel)
