@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -1,11 +1,12 @@
 package com.shegor.samplenewsapp.newsSearch
 
 import androidx.lifecycle.*
-import com.shegor.samplenewsapp.base.internetNews.InternetNewsListViewModel
+import com.shegor.samplenewsapp.base.networkNews.BaseNetworkNewsListViewModel
+import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 import com.shegor.samplenewsapp.repo.NewsRepo
 
-class NewsSearchViewModel(repo: NewsRepo) : InternetNewsListViewModel(repo) {
+class NewsSearchViewModel(repo: NewsRepo, navigateToDetails : ((newsItem: NewsModel) -> Unit)? ) : BaseNetworkNewsListViewModel(repo, navigateToDetails) {
 
     private val _clearSearchBarAction = MutableLiveData<Boolean>()
     val clearSearchBarAction: LiveData<Boolean>

@@ -1,10 +1,10 @@
-package com.shegor.samplenewsapp.base.internetNews
+package com.shegor.samplenewsapp.base.networkNews
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shegor.samplenewsapp.DeletedNews
-import com.shegor.samplenewsapp.base.newsList.NewsListViewModel
+import com.shegor.samplenewsapp.base.newsList.BaseNewsListViewModel
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.utils.DateUtils
@@ -13,16 +13,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel(newsRepo) {
+abstract class BaseNetworkNewsListViewModel(override val newsRepo: NewsRepo, navigateToDetails : ((newsItem: NewsModel) -> Unit)?) : BaseNewsListViewModel(newsRepo, navigateToDetails) {
 
     private val _news = MutableLiveData<List<NewsModel>>()
     override val news: LiveData<List<NewsModel>>
         get() = _news
 
     private var deletedNewsObserver: (deletedNewsTitle: String?) -> Unit = { deletedNewsTitle ->
-        deletedNewsTitle?.let { deletedNewsTitle ->
+        deletedNewsTitle?.let { title ->
             _news.value?.let { newsList ->
-                newsList.map { if (it.title == deletedNewsTitle) it.saved = false }
+                newsList.map { if (it.title == title) it.saved = false }
             }
         }
     }
@@ -59,7 +59,7 @@ abstract class InternetNewsListViewModel(newsRepo: NewsRepo) : NewsListViewModel
         else _status.value = NewsLoadingStatus.REFRESHING_ERROR
     }
 
-    fun checkIfSaved(
+    private fun checkIfSaved(
         networkNewsList: List<NewsModel>,
         savedNewsList: List<NewsModel>
     ): List<NewsModel> {

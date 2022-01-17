@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import com.shegor.samplenewsapp.R
-import com.shegor.samplenewsapp.base.BaseFragment
-import com.shegor.samplenewsapp.base.BaseViewModelFactory
-import com.shegor.samplenewsapp.base.news.BottomMenuReselection
-import com.shegor.samplenewsapp.base.news.NewsRepoInitiating
+import com.shegor.samplenewsapp.base.base.BaseViewModelFactory
+import com.shegor.samplenewsapp.base.news.BaseNewsFragment
 import com.shegor.samplenewsapp.databinding.FragmentNewsDetailsBinding
 
-class NewsDetailsFragment : BaseFragment<NewsDetailsViewModel, FragmentNewsDetailsBinding>(),
-    BottomMenuReselection, NewsRepoInitiating {
+class NewsDetailsFragment : BaseNewsFragment<NewsDetailsViewModel, FragmentNewsDetailsBinding>()     {
 
-    override val fragment = this
 
     private lateinit var args: NewsDetailsFragmentArgs
 
@@ -26,7 +22,7 @@ class NewsDetailsFragment : BaseFragment<NewsDetailsViewModel, FragmentNewsDetai
         return BaseViewModelFactory(
             NewsDetailsViewModel::class.java
         ) {
-            NewsDetailsViewModel(getRepo(), args.newsItem)
+            NewsDetailsViewModel(newsRepo, args.newsItem)
         }
     }
 
@@ -35,7 +31,6 @@ class NewsDetailsFragment : BaseFragment<NewsDetailsViewModel, FragmentNewsDetai
         super.onViewCreated(view, savedInstanceState)
 
         connectDataBinding()
-        setItemReselectedListener(null)
         setListeners()
     }
 
@@ -54,6 +49,4 @@ class NewsDetailsFragment : BaseFragment<NewsDetailsViewModel, FragmentNewsDetai
             requireActivity().onBackPressed()
         }
     }
-
-
 }

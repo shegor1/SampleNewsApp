@@ -1,12 +1,11 @@
 package com.shegor.samplenewsapp.base.news
 
+import androidx.lifecycle.ViewModel
 import com.shegor.samplenewsapp.DeletedNews
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 
-interface SaveOrDeleteBookmark {
-
-    val newsRepo: NewsRepo
+abstract class BaseNewsViewModel(open val newsRepo: NewsRepo): ViewModel() {
 
     fun saveOrDeleteBookmark(newsItem: NewsModel) {
 

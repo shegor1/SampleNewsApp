@@ -35,7 +35,8 @@ fun setNewsLink(textView: TextView, newsLink: String?) {
         text = resources.getString(R.string.full_news_link_title, newsLink)
 
         val linkTextColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            resources.getColor(R.color.blue, context.theme) else resources.getColor(R.color.blue)
+            resources.getColor(R.color.blue, context.theme)
+        else @Suppress("DEPRECATION") resources.getColor(R.color.blue)
         setLinkTextColor(linkTextColor)
     }
 }
@@ -59,11 +60,11 @@ fun setNewsImage(imageView: ImageView, newsImgUrl: String?) {
 
 @BindingAdapter(value = ["clickListener", "newsItem"])
 fun onBookmarkIconClickListener(view: View, clickListener: NewsClickListener, newsItem: NewsModel) {
-    view.setOnClickListener { view ->
-        if (view is Button) {
+    view.setOnClickListener {
+        if (it is Button) {
             val buttonBackgroundResId =
                 if (newsItem.saved) R.drawable.ic_bookmark else R.drawable.ic_bookmark_saved
-            view.background =
+            it.background =
                 ResourcesCompat.getDrawable(view.resources, buttonBackgroundResId, null)
         }
         clickListener.onClick(newsItem, view.id)
@@ -72,17 +73,17 @@ fun onBookmarkIconClickListener(view: View, clickListener: NewsClickListener, ne
 
 @BindingAdapter("progressBarStatus")
 fun manageProgressBar(progressBar: ProgressBar, status: NewsLoadingStatus?) {
-    status?.let { status ->
+    status?.let { it ->
         progressBar.visibility =
-            if (status == NewsLoadingStatus.LOADING) View.VISIBLE else View.GONE
+            if (it == NewsLoadingStatus.LOADING) View.VISIBLE else View.GONE
     }
 }
 
 
 @BindingAdapter("placeHolderImgStatus")
 fun manageStatusImage(imageView: ImageView, status: NewsLoadingStatus?) {
-    status?.let { status ->
-        when (status) {
+    status?.let { it ->
+        when (it) {
             NewsLoadingStatus.SEARCH_INIT -> {
                 imageView.setImageResource(R.drawable.init_search)
                 imageView.visibility = View.VISIBLE
@@ -104,13 +105,15 @@ fun manageStatusImage(imageView: ImageView, status: NewsLoadingStatus?) {
             NewsLoadingStatus.DONE -> {
                 imageView.visibility = View.GONE
             }
+            else -> {
+            }
         }
     }
 }
 
 @BindingAdapter("refreshAnimStatus")
 fun manageRefresh(swipeRefreshLayout: SwipeRefreshLayout, status: NewsLoadingStatus?) {
-    status?.let { status ->
-        swipeRefreshLayout.isRefreshing = status == NewsLoadingStatus.LOADING
+    status?.let { it ->
+        swipeRefreshLayout.isRefreshing = it == NewsLoadingStatus.LOADING
     }
 }

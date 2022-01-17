@@ -1,17 +1,20 @@
 package com.shegor.samplenewsapp.newsFeed
 
-import com.shegor.samplenewsapp.base.internetNews.InternetNewsListViewModel
+import androidx.lifecycle.LiveData
+import com.shegor.samplenewsapp.base.networkNews.BaseNetworkNewsListViewModel
+import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.persistentStorage.UserPreferences
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
-import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
 import com.shegor.samplenewsapp.service.NewsFilterCategory
 
-class NewsFeedViewModel(newsRepo: NewsRepo, private val category: NewsFilterCategory) :
-    InternetNewsListViewModel(newsRepo) {
+class NewsFeedViewModel(newsRepo: NewsRepo, private val category: NewsFilterCategory, navigateToDetails : ((newsItem: NewsModel) -> Unit)?) :
+    BaseNetworkNewsListViewModel(newsRepo, navigateToDetails) {
 
+    private val prefsLiveData: LiveData<UserPreferences> =  newsRepo.getPrefsLiveData()
     private lateinit var currentPrefs: UserPreferences
+
 
     private val prefsObserver: (prefs: UserPreferences) -> Unit = {
         currentPrefs = it
@@ -23,7 +26,7 @@ class NewsFeedViewModel(newsRepo: NewsRepo, private val category: NewsFilterCate
     }
 
     private fun setPrefsObserver() {
-        prefs.userPreferencesLiveData.observeForever(prefsObserver)
+        prefsLiveData.observeForever(prefsObserver)
     }
 
     fun getLatestNewsData() {
@@ -39,7 +42,7 @@ class NewsFeedViewModel(newsRepo: NewsRepo, private val category: NewsFilterCate
     }
 
     override fun onCleared() {
-        prefs.userPreferencesLiveData.removeObserver(prefsObserver)
+        prefsLiveData.removeObserver(prefsObserver)
         super.onCleared()
     }
 }

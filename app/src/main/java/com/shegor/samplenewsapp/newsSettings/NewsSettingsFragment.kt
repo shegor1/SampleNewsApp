@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
 import com.shegor.samplenewsapp.R
-import com.shegor.samplenewsapp.base.BaseFragment
+import com.shegor.samplenewsapp.base.base.BaseFragment
+import com.shegor.samplenewsapp.base.base.BaseViewModelFactory
+import com.shegor.samplenewsapp.base.news.BaseNewsFragment
 import com.shegor.samplenewsapp.databinding.FragmentNewsSettingsBinding
+import com.shegor.samplenewsapp.newsSearch.NewsSearchViewModel
 import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
 
-class NewsSettingsFragment : BaseFragment<NewsSettingsViewModel, FragmentNewsSettingsBinding>() {
+class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNewsSettingsBinding>() {
 
     companion object {
         const val FILTER_COUNTRY_MENU_GROUP_ID = 1
@@ -21,7 +24,9 @@ class NewsSettingsFragment : BaseFragment<NewsSettingsViewModel, FragmentNewsSet
 
     override val layoutId = R.layout.fragment_news_settings
 
-    override fun getViewModelFactory() = defaultViewModelProviderFactory
+    override fun getViewModelFactory() = BaseViewModelFactory(NewsSettingsViewModel::class.java) {
+        NewsSettingsViewModel(newsRepo)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +36,7 @@ class NewsSettingsFragment : BaseFragment<NewsSettingsViewModel, FragmentNewsSet
     }
 
     private fun setupObservers() {
-        prefs.userPreferencesLiveData.observe(viewLifecycleOwner) {
+        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
             binding.currentFilterCountry.text = requireContext().getString(it.filterCountryStringId)
         }
     }

@@ -2,18 +2,14 @@ package com.shegor.samplenewsapp.newsFeed
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.shegor.samplenewsapp.base.newsList.NewsListNavigator
+import com.shegor.samplenewsapp.base.news.BaseNewsNavigator
+import com.shegor.samplenewsapp.models.NewsModel
 
-class NewsFeedNavigator(viewModel: NewsFeedViewModel) : NewsListNavigator(viewModel) {
+class NewsFeedNavigator(val fragment: Fragment) : BaseNewsNavigator() {
 
-    override fun setupNavigation(fragment: Fragment) {
-
-        setNavToDetailsFragmentObserver(fragment) {
-            fragment.findNavController().navigate(
-                NewsFeedTabsFragmentDirections.actionNewsFeedTabsFragmentToNewsDetailsFragment(
-                    it
-                )
-            )
-        }
+    override fun navigateToDetailsFragment(newsItem: NewsModel) {
+        fragment.findNavController().navigate(
+            NewsFeedTabsFragmentDirections.actionNewsFeedTabsFragmentToNewsDetailsFragment(newsItem)
+        )
     }
 }

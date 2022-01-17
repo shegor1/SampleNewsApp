@@ -1,4 +1,4 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,7 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
 
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,5 +39,6 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
     abstract fun getViewModel(): Class<VM>
 
     abstract fun getViewModelFactory(): ViewModelProvider.Factory
+
 
 }

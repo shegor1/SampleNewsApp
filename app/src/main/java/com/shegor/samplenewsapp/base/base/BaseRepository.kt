@@ -1,10 +1,10 @@
-package com.shegor.samplenewsapp.base
+package com.shegor.samplenewsapp.base.base
 
 
 import android.util.Log
-import com.shegor.samplenewsapp.NetworkOutput
 import retrofit2.Response
 import java.io.IOException
+import java.lang.Exception
 
 abstract class BaseRepository {
 
@@ -25,5 +25,10 @@ abstract class BaseRepository {
             NetworkOutput.Success(response.body()!!)
         else
             NetworkOutput.Error(IOException("Something went wrong due to $error"))
+    }
+
+    sealed class NetworkOutput<out T: Any>{
+        data class Success<out T : Any>(val output: T) : NetworkOutput<T>()
+        data class Error(val exception: Exception) : NetworkOutput<Nothing>()
     }
 }

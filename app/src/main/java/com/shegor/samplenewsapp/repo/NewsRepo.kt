@@ -1,11 +1,12 @@
 package com.shegor.samplenewsapp.repo
 
 import androidx.lifecycle.LiveData
-import com.shegor.samplenewsapp.base.BaseRepository
+import com.shegor.samplenewsapp.base.base.BaseRepository
 import com.shegor.samplenewsapp.service.NewsApiService
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.models.NewsResponse
 import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
+import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.service.NewsFilterCategory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,13 +32,9 @@ class NewsRepo(private val newsApiService: NewsApiService, private val newsDatab
     private suspend fun getNewsData(networkCall: suspend () -> Response<NewsResponse>): List<NewsModel>? =
         apiCall(call = networkCall, error = networkErrorMessage)?.articles?.toList()
 
-    fun getLiveDataNewsFromDb(): LiveData<List<NewsModel>> {
-        return newsDatabase.newsDao.getAllNewsLiveData()
-    }
+    fun getLiveDataNewsFromDb() = newsDatabase.newsDao.getAllNewsLiveData()
 
-    fun getNewsFromDb(): List<NewsModel> {
-        return newsDatabase.newsDao.getAllNews()
-    }
+    fun getNewsFromDb() = newsDatabase.newsDao.getAllNews()
 
     fun saveNewsItem(news: NewsModel) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -51,4 +48,9 @@ class NewsRepo(private val newsApiService: NewsApiService, private val newsDatab
             newsDatabase.newsDao.deleteNewsItem(news)
         }
     }
+
+    fun getPrefsLiveData() = prefs.userPreferencesLiveData
+
+    suspend fun updatePrefsFilterCountry(filterCountryStringId: Int) =
+        prefs.updateFilterCountry(filterCountryStringId)
 }
