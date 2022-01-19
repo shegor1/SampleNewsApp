@@ -2,7 +2,6 @@ package com.shegor.samplenewsapp.newsSettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.repo.NewsRepo
 import kotlinx.coroutines.launch
 

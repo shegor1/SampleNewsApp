@@ -13,7 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class BaseNetworkNewsListViewModel(override val newsRepo: NewsRepo, navigateToDetails : ((newsItem: NewsModel) -> Unit)?) : BaseNewsListViewModel(newsRepo, navigateToDetails) {
+abstract class BaseNetworkNewsListViewModel(
+    override val newsRepo: NewsRepo,
+    navigateToDetails: ((newsItem: NewsModel) -> Unit)?
+) : BaseNewsListViewModel(newsRepo, navigateToDetails) {
 
     private val _news = MutableLiveData<List<NewsModel>>()
     override val news: LiveData<List<NewsModel>>

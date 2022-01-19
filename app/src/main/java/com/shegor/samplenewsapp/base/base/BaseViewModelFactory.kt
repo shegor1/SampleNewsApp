@@ -9,7 +9,7 @@ class BaseViewModelFactory<T : ViewModel>(
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(viewModelClass)) {
+        if (modelClass.isAssignableFrom(viewModelClass)) {
             @Suppress("UNCHECKED_CAST")
             return createViewModel() as T
         }

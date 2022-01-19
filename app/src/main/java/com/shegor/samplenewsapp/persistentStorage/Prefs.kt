@@ -1,7 +1,10 @@
 package com.shegor.samplenewsapp.persistentStorage
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.shegor.samplenewsapp.R
@@ -16,7 +19,6 @@ class Prefs(private val dataStore: DataStore<Preferences>) {
     private object PreferencesKeys {
         val FILTER_COUNTRY = intPreferencesKey("filter_country")
     }
-
 
 
     val userPreferencesLiveData: LiveData<UserPreferences> = dataStore.data

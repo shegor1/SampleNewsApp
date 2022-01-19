@@ -10,10 +10,9 @@ import com.shegor.samplenewsapp.databinding.FragmentNewsBookmarksBinding
 class NewsBookmarksFragment :
     BaseNewsListFragment<NewsBookmarksViewModel, FragmentNewsBookmarksBinding, NewsBookmarksNavigator>() {
 
+    override val layoutId = R.layout.fragment_news_bookmarks
 
     override fun getViewModel() = NewsBookmarksViewModel::class.java
-
-    override val layoutId = R.layout.fragment_news_bookmarks
 
     override fun getViewModelFactory() =
         BaseViewModelFactory(NewsBookmarksViewModel::class.java) {
@@ -21,6 +20,8 @@ class NewsBookmarksFragment :
         }
 
     override fun getRecyclerView() = binding.newsRecyclerView
+
+    override fun getNavigator() = NewsBookmarksNavigator(requireActivity())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +32,4 @@ class NewsBookmarksFragment :
     private fun connectDataBinding() {
         binding.newsBookmarksViewModel = viewModel
     }
-
-    override fun getNavigator() = NewsBookmarksNavigator(this)
-
 }

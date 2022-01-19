@@ -9,15 +9,13 @@ import com.shegor.samplenewsapp.databinding.FragmentNewsFeedBinding
 import com.shegor.samplenewsapp.service.NewsFilterCategory
 
 class NewsFeedFragment :
-    BaseNetworkNewsListFragment<NewsFeedViewModel, FragmentNewsFeedBinding, NewsFeedNavigator>(){
+    BaseNetworkNewsListFragment<NewsFeedViewModel, FragmentNewsFeedBinding, NewsFeedNavigator>() {
 
     companion object {
         const val ARG_OBJECT = "filterCategory"
     }
 
     override val layoutId = R.layout.fragment_news_feed
-
-    override fun getNavigator() = NewsFeedNavigator(this)
 
     override fun getViewModel() = NewsFeedViewModel::class.java
 
@@ -30,8 +28,9 @@ class NewsFeedFragment :
             )
         }
 
-
     override fun getRecyclerView() = binding.newsRecyclerView
+
+    override fun getNavigator() = NewsFeedNavigator(requireActivity())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

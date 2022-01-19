@@ -30,6 +30,7 @@ class App : Application() {
         newsDb = NewsDatabase.getInstance(this)
         instance = this
         prefs = Prefs(dataStore)
+
     }
 
 }

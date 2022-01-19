@@ -1,15 +1,16 @@
 package com.shegor.samplenewsapp.newsSearch
 
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
+import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.base.news.BaseNewsNavigator
 import com.shegor.samplenewsapp.models.NewsModel
 
-class NewsSearchNavigator(val fragment: Fragment) : BaseNewsNavigator() {
+class NewsSearchNavigator(private val fragmentActivity: FragmentActivity) : BaseNewsNavigator() {
 
     override fun navigateToDetailsFragment(newsItem: NewsModel) {
 
-        fragment.findNavController().navigate(
+        fragmentActivity.findNavController(R.id.navHostFragment).navigate(
             NewsSearchFragmentDirections.actionNewsSearchFragmentToNewsDetailsFragment(newsItem)
         )
     }

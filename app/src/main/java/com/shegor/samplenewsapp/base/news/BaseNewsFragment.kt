@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,26 +26,26 @@ abstract class BaseNewsFragment<VM : ViewModel, B : ViewDataBinding> : BaseFragm
         savedInstanceState: Bundle?
     ): View? {
 
-        newsRepo = getRepo()
+        getRepo()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         setItemReselectedListener()
     }
 
-    open fun getRecyclerView(): RecyclerView? = null
-
-    private fun getRepo() = NewsRepo(NewsApi.newsRetrofitService, newsDb)
+    private fun getRepo() {
+        newsRepo = NewsRepo(NewsApi.newsRetrofitService, newsDb)
+    }
 
     private fun setItemReselectedListener() {
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavMenu)
             ?.setOnItemReselectedListener {
-                lifecycleScope.launchWhenResumed {
+
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
 
                     val currentDestination = findNavController().currentDestination
-
                     if (currentDestination?.parent?.startDestinationId ?: -1 == currentDestination?.id) {
                         getRecyclerView()?.let {
                             it.layoutManager?.scrollToPosition(0)
@@ -56,4 +56,6 @@ abstract class BaseNewsFragment<VM : ViewModel, B : ViewDataBinding> : BaseFragm
                 }
             }
     }
+
+   protected open fun getRecyclerView(): RecyclerView? = null
 }

@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shegor.samplenewsapp.databinding.NewsItemBinding
 import com.shegor.samplenewsapp.models.NewsModel
 
-
 class NewsListAdapter(private val clickListener: NewsClickListener) :
     ListAdapter<NewsModel, NewsListAdapter.NewsItemViewHolder>(NewsDiffCallback()) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsItemViewHolder {
         return NewsItemViewHolder.from(parent)

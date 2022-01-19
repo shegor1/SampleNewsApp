@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
 import com.shegor.samplenewsapp.R
-import com.shegor.samplenewsapp.base.base.BaseFragment
 import com.shegor.samplenewsapp.base.base.BaseViewModelFactory
 import com.shegor.samplenewsapp.base.news.BaseNewsFragment
 import com.shegor.samplenewsapp.databinding.FragmentNewsSettingsBinding
-import com.shegor.samplenewsapp.newsSearch.NewsSearchViewModel
-import com.shegor.samplenewsapp.prefs
 import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
 
-class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNewsSettingsBinding>() {
+class NewsSettingsFragment :
+    BaseNewsFragment<NewsSettingsViewModel, FragmentNewsSettingsBinding>() {
 
     companion object {
         const val FILTER_COUNTRY_MENU_GROUP_ID = 1
@@ -20,9 +18,9 @@ class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNew
 
     private lateinit var popupMenu: PopupMenu
 
-    override fun getViewModel() = NewsSettingsViewModel::class.java
-
     override val layoutId = R.layout.fragment_news_settings
+
+    override fun getViewModel() = NewsSettingsViewModel::class.java
 
     override fun getViewModelFactory() = BaseViewModelFactory(NewsSettingsViewModel::class.java) {
         NewsSettingsViewModel(newsRepo)
@@ -33,12 +31,6 @@ class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNew
 
         setupCountrySelectPopupMenu()
         setupObservers()
-    }
-
-    private fun setupObservers() {
-        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
-            binding.currentFilterCountry.text = requireContext().getString(it.filterCountryStringId)
-        }
     }
 
     private fun setupCountrySelectPopupMenu() {
@@ -58,9 +50,14 @@ class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNew
                     country.second
                 )
             }
-
             setupCountriesMenuListeners()
             popupMenu.show()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
+            binding.currentFilterCountry.text = requireContext().getString(it.filterCountryStringId)
         }
     }
 
@@ -70,7 +67,6 @@ class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNew
 
             saveChosenCountry(menuItem.itemId)
             binding.currentFilterCountry.text = menuItem.title
-
             true
         }
     }
@@ -78,6 +74,4 @@ class NewsSettingsFragment : BaseNewsFragment<NewsSettingsViewModel, FragmentNew
     private fun saveChosenCountry(countryStringId: Int) {
         viewModel.saveChosenCountry(countryStringId)
     }
-
-
 }

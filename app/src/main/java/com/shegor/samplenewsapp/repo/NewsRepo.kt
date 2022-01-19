@@ -1,12 +1,11 @@
 package com.shegor.samplenewsapp.repo
 
-import androidx.lifecycle.LiveData
 import com.shegor.samplenewsapp.base.base.BaseRepository
-import com.shegor.samplenewsapp.service.NewsApiService
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.models.NewsResponse
 import com.shegor.samplenewsapp.persistentStorage.NewsDatabase
 import com.shegor.samplenewsapp.prefs
+import com.shegor.samplenewsapp.service.NewsApiService
 import com.shegor.samplenewsapp.service.NewsFilterCategory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

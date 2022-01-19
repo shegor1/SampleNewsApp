@@ -34,11 +34,11 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
         viewModel = ViewModelProvider(this, factory)[getViewModel()]
     }
 
-    abstract val layoutId: Int
+    protected abstract val layoutId: Int
 
-    abstract fun getViewModel(): Class<VM>
+    protected abstract fun getViewModel(): Class<VM>
 
-    abstract fun getViewModelFactory(): ViewModelProvider.Factory
+    protected abstract fun getViewModelFactory(): ViewModelProvider.Factory
 
 
 }

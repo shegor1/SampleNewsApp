@@ -5,5 +5,6 @@ import com.shegor.samplenewsapp.models.NewsModel
 
 class NewsCoordinator(private val navigator: BaseNewsNavigator) {
 
-    fun navigateToDetailsFragment(newsItem: NewsModel) = navigator.navigateToDetailsFragment(newsItem)
+    fun navigateToDetailsFragment(newsItem: NewsModel) =
+        navigator.navigateToDetailsFragment(newsItem)
 }

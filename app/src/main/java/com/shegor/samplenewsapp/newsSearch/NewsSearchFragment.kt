@@ -13,9 +13,10 @@ import com.shegor.samplenewsapp.utils.hideKeyboard
 class NewsSearchFragment :
     BaseNetworkNewsListFragment<NewsSearchViewModel, FragmentNewsSearchBinding, NewsSearchNavigator>() {
 
+    override val layoutId = R.layout.fragment_news_search
+
     override fun getViewModel() = NewsSearchViewModel::class.java
 
-    override val layoutId = R.layout.fragment_news_search
     override fun getViewModelFactory() =
         BaseViewModelFactory(NewsSearchViewModel::class.java) {
             NewsSearchViewModel(newsRepo, coordinator::navigateToDetailsFragment)
@@ -23,12 +24,18 @@ class NewsSearchFragment :
 
     override fun getRecyclerView() = binding.searchRecyclerView
 
+    override fun getNavigator() = NewsSearchNavigator(requireActivity())
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         connectDataBinding()
         setObservers()
         setupListeners()
+    }
+
+    private fun connectDataBinding() {
+        binding.searchViewModel = viewModel
     }
 
     private fun setObservers() {
@@ -41,26 +48,19 @@ class NewsSearchFragment :
         })
     }
 
-
-    private fun connectDataBinding() {
-        binding.searchViewModel = viewModel
-    }
-
     private fun setupListeners() {
 
         binding.searchBar.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (v.text.isNotBlank()) {
-
-
                     viewModel.getNewsDataByQuery(v.text.toString())
-
                 } else {
                     Toast.makeText(
                         this.context,
                         getString(R.string.empty_search_field),
                         Toast.LENGTH_SHORT
-                    ).show()
+                    )
+                        .show()
                 }
                 this.hideKeyboard()
                 true
@@ -73,8 +73,4 @@ class NewsSearchFragment :
             viewModel.clearSearchBar()
         }
     }
-
-    override fun getNavigator() = NewsSearchNavigator(this)
-
-
 }

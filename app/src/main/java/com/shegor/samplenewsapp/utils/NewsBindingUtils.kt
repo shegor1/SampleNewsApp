@@ -10,8 +10,8 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.R
+import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.models.NewsModel
 
 enum class NewsLoadingStatus { LOADING, DONE, INIT_ERROR, REFRESHING_ERROR, NO_RESULTS, SEARCH_INIT }
@@ -49,7 +49,7 @@ fun setNewsImage(imageView: ImageView, newsImgUrl: String?) {
         val imgUri = it.toUri().buildUpon().scheme("https").build()
         Glide.with(imageView.context)
             .load(imgUri)
-            .error(R.drawable.image_placeholder)
+            .error(R.drawable.network_error)
             .placeholder(ColorDrawable(Color.GRAY))
             .into(imageView)
         return@setNewsImage

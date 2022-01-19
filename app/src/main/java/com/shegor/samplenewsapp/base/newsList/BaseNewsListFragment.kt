@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
-import com.shegor.samplenewsapp.base.news.BaseNewsNavigator
 import com.shegor.samplenewsapp.base.news.BaseNewsFragment
+import com.shegor.samplenewsapp.base.news.BaseNewsNavigator
 import com.shegor.samplenewsapp.coordinator.NewsCoordinator
 import com.shegor.samplenewsapp.models.NewsModel
 
-abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBinding, N: BaseNewsNavigator> :
+abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBinding, N : BaseNewsNavigator> :
     BaseNewsFragment<VM, B>() {
 
-    lateinit var newsListAdapter: NewsListAdapter
+    private lateinit var newsListAdapter: NewsListAdapter
     private lateinit var navigator: BaseNewsNavigator
     protected lateinit var coordinator: NewsCoordinator
 
@@ -33,7 +33,6 @@ abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         setupRecyclerView()
         setNewsObservers()
@@ -55,7 +54,7 @@ abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBind
 
     abstract override fun getRecyclerView(): RecyclerView
 
-    open fun setNewsObservers() {
+    protected open fun setNewsObservers() {
 
         viewModel.news.observe(viewLifecycleOwner, { newsList ->
             newsList?.let {
@@ -64,12 +63,12 @@ abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBind
         })
     }
 
-    private fun setupNavigation(){
+    private fun setupNavigation() {
         navigator = getNavigator()
         coordinator = NewsCoordinator(navigator)
     }
 
-    abstract fun getNavigator(): N
+    protected abstract fun getNavigator(): N
 
 
     class NewsClickListener {

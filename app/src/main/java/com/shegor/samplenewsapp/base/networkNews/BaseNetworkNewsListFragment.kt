@@ -7,8 +7,8 @@ import com.shegor.samplenewsapp.base.news.BaseNewsNavigator
 import com.shegor.samplenewsapp.base.newsList.BaseNewsListFragment
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 
-abstract class BaseNetworkNewsListFragment<VM : BaseNetworkNewsListViewModel, B : ViewDataBinding, N: BaseNewsNavigator> :
-    BaseNewsListFragment<VM, B, N>()  {
+abstract class BaseNetworkNewsListFragment<VM : BaseNetworkNewsListViewModel, B : ViewDataBinding, N : BaseNewsNavigator> :
+    BaseNewsListFragment<VM, B, N>() {
 
     override fun setNewsObservers() {
         super.setNewsObservers()
@@ -23,7 +23,4 @@ abstract class BaseNetworkNewsListFragment<VM : BaseNetworkNewsListViewModel, B 
             }
         })
     }
-
-
-
 }

@@ -7,7 +7,10 @@ import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 
-abstract class BaseNewsListViewModel(override val newsRepo: NewsRepo, private var navigateToDetails : ((newsItem: NewsModel) -> Unit)?) : BaseNewsViewModel(newsRepo){
+abstract class BaseNewsListViewModel(
+    override val newsRepo: NewsRepo,
+    private var navigateToDetails: ((newsItem: NewsModel) -> Unit)?
+) : BaseNewsViewModel(newsRepo) {
 
     abstract val news: LiveData<List<NewsModel>>
 

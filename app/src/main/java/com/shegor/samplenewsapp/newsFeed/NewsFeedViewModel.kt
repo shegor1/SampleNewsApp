@@ -4,15 +4,18 @@ import androidx.lifecycle.LiveData
 import com.shegor.samplenewsapp.base.networkNews.BaseNetworkNewsListViewModel
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.persistentStorage.UserPreferences
-import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 import com.shegor.samplenewsapp.repo.NewsRepo
 import com.shegor.samplenewsapp.service.FILTER_COUNTRIES
 import com.shegor.samplenewsapp.service.NewsFilterCategory
+import com.shegor.samplenewsapp.utils.NewsLoadingStatus
 
-class NewsFeedViewModel(newsRepo: NewsRepo, private val category: NewsFilterCategory, navigateToDetails : ((newsItem: NewsModel) -> Unit)?) :
-    BaseNetworkNewsListViewModel(newsRepo, navigateToDetails) {
+class NewsFeedViewModel(
+    newsRepo: NewsRepo,
+    private val category: NewsFilterCategory,
+    navigateToDetails: ((newsItem: NewsModel) -> Unit)?
+) : BaseNetworkNewsListViewModel(newsRepo, navigateToDetails) {
 
-    private val prefsLiveData: LiveData<UserPreferences> =  newsRepo.getPrefsLiveData()
+    private val prefsLiveData: LiveData<UserPreferences> = newsRepo.getPrefsLiveData()
     private lateinit var currentPrefs: UserPreferences
 
 
@@ -25,9 +28,7 @@ class NewsFeedViewModel(newsRepo: NewsRepo, private val category: NewsFilterCate
         setPrefsObserver()
     }
 
-    private fun setPrefsObserver() {
-        prefsLiveData.observeForever(prefsObserver)
-    }
+    private fun setPrefsObserver() = prefsLiveData.observeForever(prefsObserver)
 
     fun getLatestNewsData() {
 
