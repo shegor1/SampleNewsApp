@@ -16,7 +16,7 @@ data class NewsResponse(
 @Entity(tableName = "news_table")
 data class NewsModel(
 
-    @PrimaryKey()
+    @PrimaryKey
     var title: String,
 
     @ColumnInfo(name = "publication_date") @Json(name = "publishedAt")
@@ -34,10 +34,9 @@ data class NewsModel(
     // выдает некорректное содержание, в особенности для русских новостей
     @Json(name = "description")
     var description: String?,
-) : Parcelable {
 
-    var saved: Boolean = false
+    var saved: Boolean = false,
 
     var insertDate: Long = 0L
-}
+) : Parcelable
 

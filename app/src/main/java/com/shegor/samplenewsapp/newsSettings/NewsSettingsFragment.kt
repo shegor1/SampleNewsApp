@@ -30,7 +30,11 @@ class NewsSettingsFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setupCountrySelectPopupMenu()
-        setupObservers()
+    }
+
+    override fun connectDataBinding() {
+        super.connectDataBinding()
+        binding.settingsViewModel = viewModel
     }
 
     private fun setupCountrySelectPopupMenu() {
@@ -52,12 +56,6 @@ class NewsSettingsFragment :
             }
             setupCountriesMenuListeners()
             popupMenu.show()
-        }
-    }
-
-    private fun setupObservers() {
-        viewModel.userPreferencesLiveData.observe(viewLifecycleOwner) {
-            binding.currentFilterCountry.text = requireContext().getString(it.filterCountryStringId)
         }
     }
 

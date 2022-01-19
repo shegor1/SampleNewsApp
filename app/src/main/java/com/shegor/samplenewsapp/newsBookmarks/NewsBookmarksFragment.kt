@@ -1,7 +1,5 @@
 package com.shegor.samplenewsapp.newsBookmarks
 
-import android.os.Bundle
-import android.view.View
 import com.shegor.samplenewsapp.R
 import com.shegor.samplenewsapp.base.base.BaseViewModelFactory
 import com.shegor.samplenewsapp.base.newsList.BaseNewsListFragment
@@ -23,13 +21,8 @@ class NewsBookmarksFragment :
 
     override fun getNavigator() = NewsBookmarksNavigator(requireActivity())
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        connectDataBinding()
-    }
-
-    private fun connectDataBinding() {
+    override fun connectDataBinding() {
+        super.connectDataBinding()
         binding.newsBookmarksViewModel = viewModel
     }
 }

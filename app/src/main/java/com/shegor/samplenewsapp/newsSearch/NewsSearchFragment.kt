@@ -29,12 +29,12 @@ class NewsSearchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        connectDataBinding()
         setObservers()
         setupListeners()
     }
 
-    private fun connectDataBinding() {
+    override fun connectDataBinding() {
+        super.connectDataBinding()
         binding.searchViewModel = viewModel
     }
 

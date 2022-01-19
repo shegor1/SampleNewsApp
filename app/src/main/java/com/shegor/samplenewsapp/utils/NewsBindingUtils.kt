@@ -49,7 +49,7 @@ fun setNewsImage(imageView: ImageView, newsImgUrl: String?) {
         val imgUri = it.toUri().buildUpon().scheme("https").build()
         Glide.with(imageView.context)
             .load(imgUri)
-            .error(R.drawable.network_error)
+            .error(R.drawable.image_placeholder)
             .placeholder(ColorDrawable(Color.GRAY))
             .into(imageView)
         return@setNewsImage

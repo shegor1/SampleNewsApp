@@ -26,11 +26,11 @@ class NewsDetailsFragment : BaseNewsFragment<NewsDetailsViewModel, FragmentNewsD
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        connectDataBinding()
         setListeners()
     }
 
-    private fun connectDataBinding() {
+    override fun connectDataBinding() {
+        super.connectDataBinding()
         binding.currentNews = viewModel.currentNews
         binding.viewModel = viewModel
     }

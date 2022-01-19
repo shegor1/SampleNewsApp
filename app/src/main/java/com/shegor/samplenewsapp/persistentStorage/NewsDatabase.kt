@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.shegor.samplenewsapp.models.NewsModel
 
-@Database(entities = [NewsModel::class], version = 5, exportSchema = false)
+@Database(entities = [NewsModel::class], version = 7, exportSchema = false)
 abstract class NewsDatabase : RoomDatabase() {
 
     abstract val newsDao: NewsDatabaseDao

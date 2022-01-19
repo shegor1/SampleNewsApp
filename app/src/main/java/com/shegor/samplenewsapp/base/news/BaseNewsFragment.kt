@@ -57,5 +57,5 @@ abstract class BaseNewsFragment<VM : ViewModel, B : ViewDataBinding> : BaseFragm
             }
     }
 
-   protected open fun getRecyclerView(): RecyclerView? = null
+    protected open fun getRecyclerView(): RecyclerView? = null
 }

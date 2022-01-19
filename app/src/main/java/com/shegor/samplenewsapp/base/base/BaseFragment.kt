@@ -23,15 +23,14 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = getViewModelFactory()
-        viewModel = ViewModelProvider(this, factory)[getViewModel()]
+        viewModel = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
+        connectDataBinding()
     }
 
     protected abstract val layoutId: Int
@@ -40,5 +39,7 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
 
     protected abstract fun getViewModelFactory(): ViewModelProvider.Factory
 
-
+    protected open fun connectDataBinding() {
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
 }
