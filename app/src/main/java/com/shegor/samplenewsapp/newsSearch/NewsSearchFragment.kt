@@ -56,11 +56,10 @@ class NewsSearchFragment :
                     viewModel.getNewsDataByQuery(v.text.toString())
                 } else {
                     Toast.makeText(
-                        this.context,
+                        requireActivity().applicationContext,
                         getString(R.string.empty_search_field),
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
                 this.hideKeyboard()
                 true

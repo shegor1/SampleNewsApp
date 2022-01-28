@@ -22,8 +22,13 @@ abstract class BaseRepository {
         call: suspend () -> Response<T>,
         error: String
     ): NetworkOutput<T> {
-        val response = call()
-        return if (response.isSuccessful)
+
+        val response = try {
+            call()
+        }catch (e: Exception){
+            null
+        }
+        return if (response != null && response.isSuccessful)
             NetworkOutput.Success(response.body()!!)
         else
             NetworkOutput.Error(IOException("Something went wrong due to $error"))

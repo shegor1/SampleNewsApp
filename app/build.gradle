@@ -93,11 +93,13 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.0"
     implementation "androidx.room:room-ktx:2.4.0"
 
-//viewPager2
+    //viewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
-//Java 8+ API desugaring support
+    //Java 8+ API desugaring support
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    // datastore prefs
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
-implementation "androidx.datastore:datastore-preferences:1.0.0"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 }

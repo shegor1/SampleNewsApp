@@ -2,6 +2,7 @@ package com.shegor.samplenewsapp.base.networkNews
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.shegor.samplenewsapp.DeletedNews
 import com.shegor.samplenewsapp.base.newsList.BaseNewsListViewModel
@@ -22,7 +23,7 @@ abstract class BaseNetworkNewsListViewModel(
     override val news: LiveData<List<NewsModel>>
         get() = _news
 
-    private var deletedNewsObserver: (deletedNewsTitle: String?) -> Unit = { deletedNewsTitle ->
+    private var deletedNewsObserver: Observer<String> = Observer{ deletedNewsTitle ->
         deletedNewsTitle?.let { title ->
             _news.value?.let { newsList ->
                 newsList.map { if (it.title == title) it.saved = false }
@@ -35,6 +36,7 @@ abstract class BaseNetworkNewsListViewModel(
     }
 
     protected fun getNewsData(networkRepoCall: suspend () -> List<NewsModel>?) {
+        _status.value = NewsLoadingStatus.LOADING
         viewModelScope.launch {
 
             var newsData = networkRepoCall.invoke()
@@ -42,6 +44,7 @@ abstract class BaseNetworkNewsListViewModel(
 
             if (newsData.isEmpty()) {
                 _status.value = NewsLoadingStatus.NO_RESULTS
+                _news.value = newsData
                 return@launch
             }
 
@@ -79,6 +82,7 @@ abstract class BaseNetworkNewsListViewModel(
 
     override fun onCleared() {
         DeletedNews.newsToDelete.removeObserver(deletedNewsObserver)
+
         super.onCleared()
     }
 }

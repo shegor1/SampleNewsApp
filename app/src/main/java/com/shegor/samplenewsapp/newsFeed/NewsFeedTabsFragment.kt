@@ -15,15 +15,17 @@ import com.shegor.samplenewsapp.service.NewsFilterCategory
 
 class NewsFeedTabsFragment : Fragment() {
 
-    private lateinit var binding: FragmentNewsFeedTabsBinding
-    private lateinit var categoryAdapter: CategoryAdapter
+    private var _binding: FragmentNewsFeedTabsBinding? = null
+    private val binding get() = _binding!!
+    private var categoryAdapter: CategoryAdapter? = null
+    private var mediator: TabLayoutMediator? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        binding =
+        _binding =
             DataBindingUtil.inflate(
                 inflater,
                 R.layout.fragment_news_feed_tabs,
@@ -38,17 +40,26 @@ class NewsFeedTabsFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        categoryAdapter = CategoryAdapter(this)
+        categoryAdapter = CategoryAdapter(this.childFragmentManager, viewLifecycleOwner.lifecycle)
         binding.pager.adapter = categoryAdapter
 
     }
 
     private fun setupTabs() {
-        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+       mediator = TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
 
             tab.text = if (NewsFilterCategory.values().size > position)
                 requireContext().getString(NewsFilterCategory.values()[position].categoryNameResId)
             else ""
-        }.attach()
+        }
+           mediator?.attach()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediator?.detach()
+        mediator = null
+        categoryAdapter = null
+        _binding = null
     }
 }

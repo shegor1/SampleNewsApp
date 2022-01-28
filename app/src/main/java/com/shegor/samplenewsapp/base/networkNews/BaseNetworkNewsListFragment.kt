@@ -16,7 +16,7 @@ abstract class BaseNetworkNewsListFragment<VM : BaseNetworkNewsListViewModel, B 
         viewModel.status.observe(viewLifecycleOwner, { status ->
             if (status == NewsLoadingStatus.INIT_ERROR || status == NewsLoadingStatus.REFRESHING_ERROR) {
                 Toast.makeText(
-                    context,
+                    requireActivity().applicationContext,
                     getString(R.string.network_error_message),
                     Toast.LENGTH_SHORT
                 ).show()

@@ -1,6 +1,7 @@
 package com.shegor.samplenewsapp.newsFeed
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.shegor.samplenewsapp.base.networkNews.BaseNetworkNewsListViewModel
 import com.shegor.samplenewsapp.models.NewsModel
 import com.shegor.samplenewsapp.persistentStorage.UserPreferences
@@ -19,7 +20,7 @@ class NewsFeedViewModel(
     private lateinit var currentPrefs: UserPreferences
 
 
-    private val prefsObserver: (prefs: UserPreferences) -> Unit = {
+    private val prefsObserver: Observer<UserPreferences> = Observer{
         currentPrefs = it
         getLatestNewsData()
     }
@@ -31,9 +32,6 @@ class NewsFeedViewModel(
     private fun setPrefsObserver() = prefsLiveData.observeForever(prefsObserver)
 
     fun getLatestNewsData() {
-
-        _status.value = NewsLoadingStatus.LOADING
-
         getNewsData {
             newsRepo.getLatestNews(
                 FILTER_COUNTRIES[currentPrefs.filterCountryStringId] ?: "ru",

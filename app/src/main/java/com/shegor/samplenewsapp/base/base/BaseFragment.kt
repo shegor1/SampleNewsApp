@@ -12,7 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 
 abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
 
-    protected lateinit var binding: B
+    private var _binding: B? = null
+    protected val binding get() = _binding!!
     protected lateinit var viewModel: VM
 
 
@@ -22,7 +23,7 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return binding.root
     }
 
@@ -41,5 +42,10 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding> : Fragment() {
 
     protected open fun connectDataBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

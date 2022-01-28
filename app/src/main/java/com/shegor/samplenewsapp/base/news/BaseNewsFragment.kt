@@ -36,7 +36,7 @@ abstract class BaseNewsFragment<VM : ViewModel, B : ViewDataBinding> : BaseFragm
     }
 
     private fun getRepo() {
-        newsRepo = NewsRepo(NewsApi.newsRetrofitService, newsDb)
+        newsRepo = NewsRepo(NewsApi.newsRetrofitService, newsDb.newsDao)
     }
 
     private fun setItemReselectedListener() {

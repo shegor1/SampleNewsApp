@@ -8,16 +8,16 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shegor.samplenewsapp.R
+import com.shegor.samplenewsapp.adapters.NewsClickListener
 import com.shegor.samplenewsapp.adapters.NewsListAdapter
 import com.shegor.samplenewsapp.base.news.BaseNewsFragment
 import com.shegor.samplenewsapp.base.news.BaseNewsNavigator
 import com.shegor.samplenewsapp.coordinator.NewsCoordinator
-import com.shegor.samplenewsapp.models.NewsModel
 
 abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBinding, N : BaseNewsNavigator> :
     BaseNewsFragment<VM, B>() {
 
-    private lateinit var newsListAdapter: NewsListAdapter
+    private  var newsListAdapter: NewsListAdapter? = null
     private lateinit var navigator: BaseNewsNavigator
     protected lateinit var coordinator: NewsCoordinator
 
@@ -47,9 +47,11 @@ abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBind
     }
 
     private fun getNewsRvAdapter() =
-        NewsListAdapter(com.shegor.samplenewsapp.adapters.NewsClickListener { newsItem, clickedViewId ->
-            NewsClickListener()
-                .onClick(clickedViewId, newsItem, viewModel)
+        NewsListAdapter(NewsClickListener { newsItem, clickedViewId ->
+            when (clickedViewId) {
+                R.id.newsViewHolderContainer -> viewModel.navigateToDetailsFragment(newsItem)
+                R.id.addRemoveToBookmarks -> viewModel.saveOrDeleteBookmark(newsItem)
+            }
         })
 
     abstract override fun getRecyclerView(): RecyclerView
@@ -58,7 +60,7 @@ abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBind
 
         viewModel.news.observe(viewLifecycleOwner, { newsList ->
             newsList?.let {
-                newsListAdapter.submitList(it)
+                newsListAdapter?.submitList(it)
             }
         })
     }
@@ -70,13 +72,8 @@ abstract class BaseNewsListFragment<VM : BaseNewsListViewModel, B : ViewDataBind
 
     protected abstract fun getNavigator(): N
 
-
-    class NewsClickListener {
-        fun onClick(viewId: Int, newsItem: NewsModel, newsViewModel: BaseNewsListViewModel) {
-            when (viewId) {
-                R.id.newsViewHolderContainer -> newsViewModel.navigateToDetailsFragment(newsItem)
-                R.id.addRemoveToBookmarks -> newsViewModel.saveOrDeleteBookmark(newsItem)
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        newsListAdapter = null
     }
 }

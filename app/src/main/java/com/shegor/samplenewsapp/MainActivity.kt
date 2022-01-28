@@ -16,11 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         setupBottomNavMenu()
     }
 
     private fun setupBottomNavMenu() {
         binding.bottomNavMenu.setupWithNavController(findNavController(R.id.navHostFragment))
+    }
+
+    override fun onDestroy() {
+        binding.unbind()
+        super.onDestroy()
     }
 }

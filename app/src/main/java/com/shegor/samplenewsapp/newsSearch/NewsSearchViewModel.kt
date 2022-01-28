@@ -20,9 +20,6 @@ class NewsSearchViewModel(repo: NewsRepo, navigateToDetails: ((newsItem: NewsMod
     }
 
     fun getNewsDataByQuery(query: String) {
-
-        _status.value = NewsLoadingStatus.LOADING
-
         getNewsData { newsRepo.getNewsDataByQuery(query) }
     }
 
